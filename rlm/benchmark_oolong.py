@@ -4,18 +4,21 @@ Runs RLM (GPT-5 parent + GPT-5-mini children) and vanilla baseline,
 scores with OoLong eval helpers.
 
 Usage:
-    python benchmark_oolong.py
+    python benchmark_oolong.py [--memory {none,flat,graph}] [--num-tasks N]
+                               [--context-len N] [--output PATH]
 """
 
 import os
 import json
 import time
+import argparse
 from datasets import load_dataset
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from rlm import RLM
 from rlm.logger import RLMLogger
+from rlm.bench.memory_factory import build_memory
 
 import ast
 from datetime import datetime as dt_datetime
@@ -96,14 +99,21 @@ load_dotenv()
 PARENT_MODEL = "gpt-5"           # root RLM model
 CHILD_MODEL = "gpt-5-mini"      # llm_query sub-call model
 DATASET_NAME = "agnews"          # which OOLONG dataset
-CONTEXT_LEN = 16384              # 16K — vanilla GPT-5 starts degrading
-NUM_TASKS = 2                    # how many tasks to run
 MAX_ITERATIONS = 15              # RLM iteration cap
 MAX_DEPTH = 1                    # paper setting
-OUTPUT_FILE = "results/phase1_oolong.jsonl"
 # ────────────────────────────────────────────────────────────────────────
 
-def load_tasks():
+
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--memory", choices=["none", "flat", "graph"], default="none")
+    p.add_argument("--num-tasks", type=int, default=3)
+    p.add_argument("--context-len", type=int, default=16384)
+    p.add_argument("--output", type=str, default=None)
+    return p.parse_args()
+
+
+def load_tasks(num_tasks, context_len):
     """Load OOLONG-synth numeric tasks from HuggingFace (partial credit via 0.75^|error|)."""
     print(f"Loading OOLONG-synth from HuggingFace...")
     ds = load_dataset("oolongbench/oolong-synth", split="test")
@@ -111,14 +121,43 @@ def load_tasks():
     filtered = ds.filter(
         lambda x: (
             x["dataset"] == DATASET_NAME
-            and x["context_len"] == CONTEXT_LEN
+            and x["context_len"] == context_len
             and x["answer_type"] == "ANSWER_TYPE.NUMERIC"
         )
     )
-    print(f"Found {len(filtered)} numeric tasks for {DATASET_NAME} at {CONTEXT_LEN} tokens")
+    print(f"Found {len(filtered)} numeric tasks for {DATASET_NAME} at {context_len} tokens")
 
-    tasks = [filtered[i] for i in range(min(NUM_TASKS, len(filtered)))]
+    tasks = [filtered[i] for i in range(min(num_tasks, len(filtered)))]
     return tasks
+
+
+def wrap_tools_with_counters(tools):
+    """Wrap memory_write/memory_read tool callables with a counter.
+    Returns (tools_dict, counters_dict). Mutates input dict."""
+    counters = {"write": 0, "read": 0}
+    if not tools:
+        return tools, counters
+
+    def make_wrapper(fn, key):
+        def wrapper(*args, **kwargs):
+            counters[key] += 1
+            return fn(*args, **kwargs)
+        return wrapper
+
+    for name, entry in list(tools.items()):
+        if "write" in name:
+            counter_key = "write"
+        elif "read" in name:
+            counter_key = "read"
+        else:
+            continue
+
+        if isinstance(entry, dict) and "tool" in entry:
+            entry["tool"] = make_wrapper(entry["tool"], counter_key)
+        elif callable(entry):
+            tools[name] = make_wrapper(entry, counter_key)
+
+    return tools, counters
 
 
 def run_vanilla_baseline(task, client):
@@ -159,11 +198,19 @@ def run_rlm(task, rlm_instance):
 
 
 def main():
+    args = parse_args()
+
     os.makedirs("results", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
 
+    if args.output is None:
+        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"results/oolong_{args.memory}_{ts}.jsonl"
+    else:
+        output_file = args.output
+
     # Load tasks
-    tasks = load_tasks()
+    tasks = load_tasks(args.num_tasks, args.context_len)
     if not tasks:
         print("No tasks found! Check dataset name and context length.")
         return
@@ -174,6 +221,15 @@ def main():
         print(f"    Gold answer: {t['answer']}")
         print(f"    Task type: {t['task']}, Answer type: {t['answer_type']}")
         print()
+
+    # ── Setup memory backend + tools ────────────────────────────────────
+    backend = build_memory(args.memory)
+    custom_tools = None
+    counters = {"write": 0, "read": 0}
+    if backend is not None:
+        from rlm.memory.tools import make_memory_tools
+        custom_tools = make_memory_tools(backend)
+        custom_tools, counters = wrap_tools_with_counters(custom_tools)
 
     # ── Setup RLM ───────────────────────────────────────────────────────
     logger = RLMLogger(log_dir="./logs")
@@ -189,6 +245,8 @@ def main():
         max_iterations=MAX_ITERATIONS,
         verbose=True,
         logger=logger,
+        custom_tools=custom_tools,
+        custom_sub_tools=custom_tools,
     )
 
     # ── Setup vanilla baseline client ───────────────────────────────────
@@ -203,6 +261,12 @@ def main():
         print(f"Question: {task['question']}")
         print(f"Gold: {task['answer']}")
         print(f"{'='*60}")
+
+        # Reset memory between tasks to prevent cross-task bleed
+        if backend is not None:
+            backend.reset()
+        counters["write"] = 0
+        counters["read"] = 0
 
         # Vanilla baseline
         print(f"\n--- Vanilla {PARENT_MODEL} ---")
@@ -239,6 +303,9 @@ def main():
             "gold_answer": task["answer"],
             "task_type": task["task"],
             "answer_type": task["answer_type"],
+            "memory_backend": args.memory,
+            "memory_calls_write": counters["write"],
+            "memory_calls_read": counters["read"],
             "vanilla": {
                 "answer": vanilla_answer,
                 "score": vanilla_score["score"],
@@ -260,7 +327,7 @@ def main():
         results.append(result)
 
         # Write incrementally
-        with open(OUTPUT_FILE, "a") as f:
+        with open(output_file, "a") as f:
             f.write(json.dumps(result) + "\n")
 
     # ── Summary ─────────────────────────────────────────────────────────
@@ -273,7 +340,8 @@ def main():
     vanilla_times = [r["vanilla"]["time_s"] for r in results]
     rlm_times = [r["rlm"]["time_s"] for r in results]
 
-    print(f"Dataset: {DATASET_NAME}, Context: {CONTEXT_LEN} tokens, Tasks: {len(results)}")
+    print(f"Dataset: {DATASET_NAME}, Context: {args.context_len} tokens, Tasks: {len(results)}")
+    print(f"Memory backend: {args.memory}")
     print(f"")
     print(f"  Vanilla {PARENT_MODEL}:")
     print(f"    Avg score: {sum(vanilla_scores)/len(vanilla_scores):.3f}")
@@ -283,7 +351,7 @@ def main():
     print(f"    Avg score: {sum(rlm_scores)/len(rlm_scores):.3f}")
     print(f"    Avg time:  {sum(rlm_times)/len(rlm_times):.2f}s")
     print(f"")
-    print(f"Results saved to {OUTPUT_FILE}")
+    print(f"Results saved to {output_file}")
 
     # Cleanup
     rlm_instance.close()
