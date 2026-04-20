@@ -12,7 +12,8 @@ Runs:
 Scoring: SQuAD-style EM and F1 (max over answer aliases).
 
 Usage:
-    python benchmark_musique.py
+    python benchmark_musique.py [--memory {none,flat,graph}] [--num-tasks N]
+                                [--output PATH]
 """
 
 import os
@@ -20,6 +21,7 @@ import re
 import json
 import time
 import string
+import argparse
 from collections import Counter
 from datasets import load_dataset
 from dotenv import load_dotenv
@@ -27,6 +29,7 @@ from openai import OpenAI
 
 from rlm import RLM
 from rlm.logger import RLMLogger
+from rlm.bench.memory_factory import build_memory
 from datetime import datetime as dt_datetime
 
 load_dotenv()
@@ -34,12 +37,19 @@ load_dotenv()
 # ── Config ──────────────────────────────────────────────────────────────
 PARENT_MODEL = "gpt-5"           # root RLM model
 CHILD_MODEL = "gpt-5-mini"      # llm_query sub-call model
-NUM_TASKS = 5                    # how many examples to evaluate
 NUM_HOPS = None                  # None = all, or 2/3/4 to filter
 MAX_ITERATIONS = 15              # RLM iteration cap
 MAX_DEPTH = 1                    # paper setting
-OUTPUT_FILE = "results/musique_benchmark.jsonl"
 # ────────────────────────────────────────────────────────────────────────
+
+
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--memory", choices=["none", "flat", "graph"], default="none")
+    p.add_argument("--num-tasks", type=int, default=5)
+    p.add_argument("--context-len", type=int, default=16384, help="ignored for MuSiQue")
+    p.add_argument("--output", type=str, default=None)
+    return p.parse_args()
 
 
 # ── SQuAD-style scoring ────────────────────────────────────────────────
@@ -105,7 +115,7 @@ def format_context(paragraphs):
     return "\n\n".join(parts)
 
 
-def load_tasks():
+def load_tasks(num_tasks):
     """Load MuSiQue answerable tasks from HuggingFace."""
     print("Loading MuSiQue from HuggingFace...")
     ds = load_dataset("bdsaglam/musique", "answerable", split="validation")
@@ -116,8 +126,8 @@ def load_tasks():
         ds = ds.filter(lambda x: len(x["question_decomposition"]) == NUM_HOPS)
         print(f"  After filtering to {NUM_HOPS}-hop: {len(ds)}")
 
-    # Take first NUM_TASKS
-    n = min(NUM_TASKS, len(ds))
+    # Take first num_tasks
+    n = min(num_tasks, len(ds))
     tasks = [ds[i] for i in range(n)]
     print(f"  Using {n} tasks")
 
@@ -127,6 +137,35 @@ def load_tasks():
         print(f"    {h}-hop: {c}")
 
     return tasks
+
+
+def wrap_tools_with_counters(tools):
+    """Wrap memory_write/memory_read tool callables with a counter.
+    Returns (tools_dict, counters_dict). Mutates input dict."""
+    counters = {"write": 0, "read": 0}
+    if not tools:
+        return tools, counters
+
+    def make_wrapper(fn, key):
+        def wrapper(*args, **kwargs):
+            counters[key] += 1
+            return fn(*args, **kwargs)
+        return wrapper
+
+    for name, entry in list(tools.items()):
+        if "write" in name:
+            counter_key = "write"
+        elif "read" in name:
+            counter_key = "read"
+        else:
+            continue
+
+        if isinstance(entry, dict) and "tool" in entry:
+            entry["tool"] = make_wrapper(entry["tool"], counter_key)
+        elif callable(entry):
+            tools[name] = make_wrapper(entry, counter_key)
+
+    return tools, counters
 
 
 # ── Runners ────────────────────────────────────────────────────────────
@@ -166,10 +205,18 @@ def run_rlm(question, context, rlm_instance):
 # ── Main ───────────────────────────────────────────────────────────────
 
 def main():
+    args = parse_args()
+
     os.makedirs("results", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
 
-    tasks = load_tasks()
+    if args.output is None:
+        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"results/musique_{args.memory}_{ts}.jsonl"
+    else:
+        output_file = args.output
+
+    tasks = load_tasks(args.num_tasks)
     if not tasks:
         print("No tasks found!")
         return
@@ -181,6 +228,15 @@ def main():
         print(f"    Answer: {t['answer']}")
         print(f"    Paragraphs: {len(t['paragraphs'])}")
         print()
+
+    # ── Setup memory backend + tools ────────────────────────────────────
+    backend = build_memory(args.memory)
+    custom_tools = None
+    counters = {"write": 0, "read": 0}
+    if backend is not None:
+        from rlm.memory.tools import make_memory_tools
+        custom_tools = make_memory_tools(backend)
+        custom_tools, counters = wrap_tools_with_counters(custom_tools)
 
     # ── Setup RLM ───────────────────────────────────────────────────────
     logger = RLMLogger(log_dir="./logs")
@@ -194,6 +250,8 @@ def main():
         max_iterations=MAX_ITERATIONS,
         verbose=True,
         logger=logger,
+        custom_tools=custom_tools,
+        custom_sub_tools=custom_tools,
     )
 
     vanilla_client = OpenAI()
@@ -216,6 +274,12 @@ def main():
             print(f"Aliases: {aliases}")
         print(f"{'='*60}")
 
+        # Reset memory between tasks to prevent cross-task bleed
+        if backend is not None:
+            backend.reset()
+        counters["write"] = 0
+        counters["read"] = 0
+
         result = {
             "task_id": task["id"],
             "question": question,
@@ -227,6 +291,7 @@ def main():
                 {"question": d["question"], "answer": d["answer"]}
                 for d in task["question_decomposition"]
             ],
+            "memory_backend": args.memory,
         }
 
         # ── Vanilla baseline ────────────────────────────────────────────
@@ -261,11 +326,13 @@ def main():
             print(f"  ERROR: {e}")
             result["rlm"] = {"answer": str(e), "em": 0, "f1": 0, "time_s": 0}
 
+        result["memory_calls_write"] = counters["write"]
+        result["memory_calls_read"] = counters["read"]
         result["timestamp"] = dt_datetime.now().isoformat()
         results.append(result)
 
         # Write incrementally
-        with open(OUTPUT_FILE, "a") as f:
+        with open(output_file, "a") as f:
             f.write(json.dumps(result) + "\n")
 
     # ── Summary ─────────────────────────────────────────────────────────
@@ -273,6 +340,7 @@ def main():
     print("SUMMARY")
     print(f"{'='*60}")
     print(f"Tasks: {len(results)}")
+    print(f"Memory backend: {args.memory}")
 
     for method in ["vanilla", "rlm"]:
         label = f"Vanilla {PARENT_MODEL}" if method == "vanilla" else f"RLM ({PARENT_MODEL} + {CHILD_MODEL})"
@@ -299,7 +367,7 @@ def main():
                 if ems:
                     print(f"    {n_hop}-hop {label}: EM={sum(ems)/len(ems):.3f}, F1={sum(f1s)/len(f1s):.3f} (n={len(ems)})")
 
-    print(f"\nResults saved to {OUTPUT_FILE}")
+    print(f"\nResults saved to {output_file}")
     rlm_instance.close()
 
 
