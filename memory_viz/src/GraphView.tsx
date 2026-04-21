@@ -21,11 +21,18 @@ export default function GraphView({ data }: Props) {
 
   const graphData = useMemo(() => {
     if (!data) return { nodes: [], links: [] };
+    const degree = new Map<string, number>();
+    for (const e of data.edges) {
+      degree.set(e.source, (degree.get(e.source) ?? 0) + 1);
+      degree.set(e.target, (degree.get(e.target) ?? 0) + 1);
+    }
     return {
-      nodes: data.nodes.map((n) => ({ ...n })),
+      nodes: data.nodes.map((n) => ({ ...n, degree: degree.get(n.id) ?? 0 })),
       links: data.edges.map((e) => ({ ...e })),
     };
   }, [data]);
+
+  const isLarge = (data?.nodes.length ?? 0) > 30;
 
   if (!data) {
     return <div className="empty">Loading graph…</div>;
@@ -47,6 +54,11 @@ export default function GraphView({ data }: Props) {
           <strong>{data.nodes.length}</strong> nodes · <strong>{data.edges.length}</strong> edges
         </div>
         <div>click a node to inspect its summary</div>
+        {isLarge && (
+          <div>
+            node size ∝ degree · zoom in for labels · hover edge for fact
+          </div>
+        )}
       </div>
 
       <ForceGraph2D
@@ -58,16 +70,23 @@ export default function GraphView({ data }: Props) {
         nodeAutoColorBy="kind"
         nodeCanvasObject={(node: any, ctx, globalScale) => {
           const label = node.name as string;
-          const fontSize = 12 / globalScale;
+          const deg = node.degree ?? 0;
+          // Radius grows with degree so hubs visually pop.
+          const radius = Math.max(4, Math.min(18, 4 + Math.sqrt(deg) * 2.2));
           ctx.fillStyle = node.color || "#5b8cff";
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 6, 0, 2 * Math.PI);
+          ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
           ctx.fill();
+
+          // Hide labels when zoomed out on large graphs; always show top hubs.
+          const showLabel = !isLarge || globalScale > 1.8 || deg >= 8;
+          if (!showLabel) return;
+          const fontSize = Math.max(10 / globalScale, 3);
           ctx.font = `${fontSize}px ui-sans-serif, system-ui, sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "top";
           ctx.fillStyle = "#e6e9ef";
-          ctx.fillText(label, node.x, node.y + 8);
+          ctx.fillText(label, node.x, node.y + radius + 2);
         }}
         linkLabel={(l: any) => l.fact}
         linkColor={() => "#3a4466"}
@@ -75,6 +94,9 @@ export default function GraphView({ data }: Props) {
         linkDirectionalArrowRelPos={1}
         linkCanvasObjectMode={() => "after"}
         linkCanvasObject={(link: any, ctx, globalScale) => {
+          // Suppress edge labels when zoomed out or on large graphs —
+          // hundreds of overlapping labels is worse than none.
+          if (isLarge && globalScale < 2.2) return;
           const label = link.name || "";
           if (!label) return;
           const fontSize = 10 / globalScale;

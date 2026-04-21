@@ -3,15 +3,26 @@ dump their state to memory_viz/public/data/{flat,graph}.json so the
 memory_viz dev app can render them.
 
 Modes:
-  simulated (default)  — seed both backends with known MuSiQue-T1 facts.
-                         No OpenAI API calls. Instant. Good for a clean demo.
-  real                 — run one MuSiQue task (2-hop, first example) through
-                         the real RLM + memory pipeline and dump whatever the
-                         parent actually wrote. Makes API calls (~$0.50, ~3 min).
+  simulated (default)  — seed both backends with 4 known MuSiQue-T1 facts.
+                         No OpenAI API calls. Instant. ~4 nodes, ~4 edges.
+  real                 — run one MuSiQue task through the real RLM + memory
+                         pipeline. Dumps what the parent actually wrote.
+                         Makes API calls (~$1, ~3-5 min). Density depends on
+                         how much the parent chose to write.
+  dense                — bypass the parent. Write every paragraph of a chosen
+                         MuSiQue task directly to Graphiti as its own episode.
+                         Shows what a rich KG looks like when given real text
+                         content. Makes API calls (~$1-2, ~3-10 min depending
+                         on paragraph count). Typically yields 30-100+ nodes.
+
+Task selection flags (apply to real / dense):
+  --task-index N   pick the N-th task (default 0)
+  --min-hops H     skip tasks whose decomposition has fewer than H hops
 
 Usage:
-    python rlm/scripts/dump_memory_viz.py                # simulated
-    python rlm/scripts/dump_memory_viz.py --mode real    # live run
+    python rlm/scripts/dump_memory_viz.py                          # simulated
+    python rlm/scripts/dump_memory_viz.py --mode real --min-hops 3 # 3-hop real
+    python rlm/scripts/dump_memory_viz.py --mode dense --min-hops 4
 """
 from __future__ import annotations
 
@@ -149,21 +160,29 @@ def run_simulated() -> None:
         g.reset()
 
 
-def run_real() -> None:
+def _pick_task(task_index: int, min_hops: int):
+    from datasets import load_dataset
+    ds = load_dataset("bdsaglam/musique", "answerable", split="validation")
+    if min_hops > 2:
+        ds = ds.filter(lambda x: len(x["question_decomposition"]) >= min_hops)
+    if task_index >= len(ds):
+        raise SystemExit(f"task_index {task_index} >= {len(ds)} matching tasks")
+    return ds[task_index]
+
+
+def run_real(task_index: int = 0, min_hops: int = 0) -> None:
     from dotenv import load_dotenv
     load_dotenv()
     if not os.getenv("OPENAI_API_KEY"):
         raise SystemExit("--mode real requires OPENAI_API_KEY in env / .env")
 
-    print("Real mode — running one MuSiQue task end-to-end. This takes ~3 min.")
+    print(f"Real mode — running one MuSiQue task (index={task_index}, min-hops={min_hops}). ~3-5 min.")
 
-    from datasets import load_dataset
     from rlm import RLM
     from rlm.memory import FlatKVBackend, GraphitiBackend, make_memory_tools
     from rlm.bench.harness import wrap_tools_with_counters
 
-    ds = load_dataset("bdsaglam/musique", "answerable", split="validation")
-    task = ds[0]
+    task = _pick_task(task_index, min_hops)
     question = task["question"]
     paragraphs = "\n\n".join(
         f"[{p.get('title', f'Paragraph {i+1}')}]\n{p['paragraph_text']}"
@@ -215,17 +234,75 @@ def run_real() -> None:
                 pass
 
 
+def run_dense(task_index: int = 0, min_hops: int = 0) -> None:
+    """Write every paragraph of a MuSiQue task directly to Graphiti as a
+    separate episode. Produces the richest possible graph. No RLM; the
+    parent does not participate. Also populates a flat KV with a small
+    per-paragraph index so the Flat tab isn't empty."""
+    from dotenv import load_dotenv
+    load_dotenv()
+    if not os.getenv("OPENAI_API_KEY"):
+        raise SystemExit("--mode dense requires OPENAI_API_KEY in env / .env")
+
+    from rlm.memory import FlatKVBackend, GraphitiBackend
+
+    task = _pick_task(task_index, min_hops)
+    paragraphs = task["paragraphs"]
+    n_hops = len(task["question_decomposition"])
+
+    print(
+        f"Dense mode — seeding Graphiti with {len(paragraphs)} paragraphs from "
+        f"MuSiQue task id={task['id']} ({n_hops}-hop).\n"
+        f"Each write takes ~10-30s of Graphiti entity extraction. "
+        f"Estimated total: ~{len(paragraphs) * 15 / 60:.0f} min."
+    )
+
+    meta = {
+        "task_id": task["id"],
+        "question": task["question"],
+        "gold_answer": task["answer"],
+    }
+    globals()["TASK_META"] = meta
+
+    # Flat: store each paragraph as its own key for quick lookup.
+    flat = FlatKVBackend()
+    for i, p in enumerate(paragraphs):
+        title = p.get("title", f"Paragraph {i+1}")
+        flat.write(f"paragraph:{title}", p["paragraph_text"])
+    flat.write("_question", task["question"])
+    flat.write("_gold_answer", task["answer"])
+    dump_flat(dict(flat._store), source=f"dense / MuSiQue task {task['id']} ({n_hops}-hop)")
+
+    # Graph: each paragraph becomes its own episode.
+    g = GraphitiBackend()
+    try:
+        for i, p in enumerate(paragraphs):
+            title = p.get("title", f"Paragraph {i+1}")
+            text = p["paragraph_text"]
+            print(f"  [{i+1}/{len(paragraphs)}] writing '{title[:60]}' ({len(text)} chars)…")
+            g.write(f"p_{i}_{title[:40]}", f"[{title}] {text}")
+        nodes, edges = g._loop.run_until_complete(snapshot_graphiti(g._graphiti))
+        print(f"\nGraph snapshot: {len(nodes)} nodes, {len(edges)} edges")
+        dump_graph(nodes, edges, source=f"dense / MuSiQue task {task['id']} ({n_hops}-hop)")
+    finally:
+        g.reset()
+
+
 # ── Main ───────────────────────────────────────────────────────────────
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--mode", choices=["simulated", "real"], default="simulated")
+    p.add_argument("--mode", choices=["simulated", "real", "dense"], default="simulated")
+    p.add_argument("--task-index", type=int, default=0, help="which matching task to pick (real/dense only)")
+    p.add_argument("--min-hops", type=int, default=0, help="filter MuSiQue tasks to at least H hops (real/dense only)")
     args = p.parse_args()
     print(f"Writing viz data to {VIZ_DATA}")
     if args.mode == "simulated":
         run_simulated()
+    elif args.mode == "real":
+        run_real(task_index=args.task_index, min_hops=args.min_hops)
     else:
-        run_real()
+        run_dense(task_index=args.task_index, min_hops=args.min_hops)
     print("\nDone. Start the viewer with:")
     print("  cd memory_viz && npm install && npm run dev")
 
