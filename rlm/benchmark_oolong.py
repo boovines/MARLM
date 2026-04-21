@@ -1,31 +1,56 @@
-"""
-Phase 1: OOLONG benchmark — small test with agnews at 1024 tokens.
-Runs RLM (GPT-5 parent + GPT-5-mini children) and vanilla baseline,
-scores with OoLong eval helpers.
+"""OOLONG benchmark — runs multiple methods (vanilla / RLM / majority-vote /
+memory-augmented RLM) over the same OOLONG-agnews tasks.
+
+Methods (pick via --methods a,b,c):
+    vanilla             gpt-5, direct call, no RLM
+    rlm                 RLM (gpt-5 parent + gpt-5-mini children)
+    rlm_majority        RLM + N-way majority vote on every sub-call
+    rlm_memory_flat     RLM + flat-KV persistent memory (write/read tools)
+    rlm_memory_graph    RLM + Graphiti-Kuzu knowledge graph memory
 
 Usage:
-    python benchmark_oolong.py [--memory {none,flat,graph}] [--num-tasks N]
-                               [--context-len N] [--output PATH]
+    python benchmark_oolong.py \\
+        --methods vanilla,rlm,rlm_memory_flat \\
+        --num-tasks 3 --context-len 16384 --max-wall-s 600
 """
+from __future__ import annotations
 
-import os
-import json
-import time
 import argparse
+import ast
+import json
+import os
+import time
+from datetime import datetime as dt_datetime
+
 from datasets import load_dataset
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from rlm import RLM
-from rlm.logger import RLMLogger
+from rlm.bench.harness import (
+    METHODS,
+    TaskTimeout,
+    parse_method,
+    wall_clock_limit,
+    wrap_tools_with_counters,
+)
+from rlm.bench.majority import install_majority_vote
 from rlm.bench.memory_factory import build_memory
+from rlm.logger import RLMLogger
+from rlm.memory import make_memory_tools
 
-import ast
-from datetime import datetime as dt_datetime
+load_dotenv()
 
+PARENT_MODEL = "gpt-5"
+CHILD_MODEL = "gpt-5-mini"
+DATASET_NAME = "agnews"
+MAX_ITERATIONS = 15
+MAX_DEPTH = 1
+
+
+# ── Scoring (from oolong eval_helpers.py) ──────────────────────────────
 
 def synth_attempt_answer_parse(answer):
-    """Parse answer from model output. Copied from oolong eval_helpers.py to avoid litellm dependency."""
     parse_confidence = "low"
     if ":" not in answer:
         if len(answer) < 20:
@@ -33,9 +58,7 @@ def synth_attempt_answer_parse(answer):
         else:
             return answer.split()[-1], parse_confidence
     candidate_answer = answer.split(":")[-1].strip()
-    candidate_answer = candidate_answer.replace("*", "")
-    candidate_answer = candidate_answer.replace("[", "")
-    candidate_answer = candidate_answer.replace("]", "")
+    candidate_answer = candidate_answer.replace("*", "").replace("[", "").replace("]", "")
     parse_confidence = "med"
     if "User:" in answer or "Answer:" in answer or "Date:" in answer or "Label" in answer:
         parse_confidence = "high"
@@ -51,16 +74,13 @@ def synth_attempt_answer_parse(answer):
 
 
 def synth_process_response(datapoint, output, model):
-    """Score model output against gold answer. Copied from oolong eval_helpers.py."""
     import dateutil.parser
-
     score = 0
     gold = (
         ast.literal_eval(datapoint["answer"])[0]
         if "datetime" not in datapoint["answer"]
         else dt_datetime.strptime(datapoint["answer"], "[datetime.date(%Y, %m, %d)]")
     )
-
     trimmed_output, parse_confidence = synth_attempt_answer_parse(output)
     if str(trimmed_output) == str(gold):
         score = 1
@@ -69,9 +89,9 @@ def synth_process_response(datapoint, output, model):
             score = 1
     elif datapoint["answer_type"] == "ANSWER_TYPE.NUMERIC":
         try:
+            score = 0.75 ** (abs(int(gold) - int(trimmed_output)))
             trimmed_output = int(trimmed_output)
             gold = int(gold)
-            score = 0.75 ** (abs(gold - trimmed_output))
         except Exception:
             parse_confidence = "low"
     elif datapoint["answer_type"] == "ANSWER_TYPE.DATE":
@@ -80,44 +100,44 @@ def synth_process_response(datapoint, output, model):
             score = trimmed_output == gold
         except Exception:
             parse_confidence = "low"
-
     return {
-        "id": datapoint["id"],
-        "context_window_id": datapoint["context_window_id"],
-        "dataset": datapoint["dataset"],
-        "model": model,
         "attempted_parse": str(trimmed_output),
         "parse_confidence": parse_confidence,
         "full_answer": output,
-        "score": score,
-        "answer": str(gold),
+        "score": float(score),
+        "gold": str(gold),
     }
 
-load_dotenv()
 
-# ── Config ──────────────────────────────────────────────────────────────
-PARENT_MODEL = "gpt-5"           # root RLM model
-CHILD_MODEL = "gpt-5-mini"      # llm_query sub-call model
-DATASET_NAME = "agnews"          # which OOLONG dataset
-MAX_ITERATIONS = 15              # RLM iteration cap
-MAX_DEPTH = 1                    # paper setting
-# ────────────────────────────────────────────────────────────────────────
-
+# ── Args ────────────────────────────────────────────────────────────────
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--memory", choices=["none", "flat", "graph"], default="none")
+    p.add_argument(
+        "--methods",
+        type=str,
+        default="vanilla,rlm,rlm_memory_flat",
+        help=f"comma-separated subset of {METHODS}",
+    )
     p.add_argument("--num-tasks", type=int, default=3)
     p.add_argument("--context-len", type=int, default=16384)
+    p.add_argument("--max-wall-s", type=int, default=600, help="per-task wall-clock cap (seconds); 0 disables")
+    p.add_argument("--majority-n", type=int, default=3)
     p.add_argument("--output", type=str, default=None)
-    return p.parse_args()
+    args = p.parse_args()
+    methods = [m.strip() for m in args.methods.split(",") if m.strip()]
+    bad = [m for m in methods if m not in METHODS]
+    if bad:
+        raise SystemExit(f"unknown method(s): {bad}; allowed: {METHODS}")
+    args.methods = methods
+    return args
 
+
+# ── Tasks ───────────────────────────────────────────────────────────────
 
 def load_tasks(num_tasks, context_len):
-    """Load OOLONG-synth numeric tasks from HuggingFace (partial credit via 0.75^|error|)."""
     print(f"Loading OOLONG-synth from HuggingFace...")
     ds = load_dataset("oolongbench/oolong-synth", split="test")
-
     filtered = ds.filter(
         lambda x: (
             x["dataset"] == DATASET_NAME
@@ -125,119 +145,46 @@ def load_tasks(num_tasks, context_len):
             and x["answer_type"] == "ANSWER_TYPE.NUMERIC"
         )
     )
-    print(f"Found {len(filtered)} numeric tasks for {DATASET_NAME} at {context_len} tokens")
-
-    tasks = [filtered[i] for i in range(min(num_tasks, len(filtered)))]
-    return tasks
+    print(f"Found {len(filtered)} numeric tasks at {context_len}; using {min(num_tasks, len(filtered))}")
+    return [filtered[i] for i in range(min(num_tasks, len(filtered)))]
 
 
-def wrap_tools_with_counters(tools):
-    """Wrap memory_write/memory_read tool callables with a counter.
-    Returns (tools_dict, counters_dict). Mutates input dict."""
-    counters = {"write": 0, "read": 0}
-    if not tools:
-        return tools, counters
+# ── Runners ─────────────────────────────────────────────────────────────
 
-    def make_wrapper(fn, key):
-        def wrapper(*args, **kwargs):
-            counters[key] += 1
-            return fn(*args, **kwargs)
-        return wrapper
-
-    for name, entry in list(tools.items()):
-        if "write" in name:
-            counter_key = "write"
-        elif "read" in name:
-            counter_key = "read"
-        else:
-            continue
-
-        if isinstance(entry, dict) and "tool" in entry:
-            entry["tool"] = make_wrapper(entry["tool"], counter_key)
-        elif callable(entry):
-            tools[name] = make_wrapper(entry, counter_key)
-
-    return tools, counters
-
-
-def run_vanilla_baseline(task, client):
-    """Run vanilla GPT-5 on the full context (no RLM)."""
-    context = task["context_window_text"]
-    question = task["question"]
-    prompt = f"{context}\n\n{question}"
-
+def run_vanilla(task, client, max_wall):
+    prompt = f"{task['context_window_text']}\n\n{task['question']}"
     start = time.time()
-    response = client.chat.completions.create(
-        model=PARENT_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    with wall_clock_limit(max_wall):
+        r = client.chat.completions.create(
+            model=PARENT_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+        )
     elapsed = time.time() - start
-
-    answer = response.choices[0].message.content
-    usage = {
-        "input_tokens": response.usage.prompt_tokens,
-        "output_tokens": response.usage.completion_tokens,
+    return r.choices[0].message.content, elapsed, {
+        "input_tokens": r.usage.prompt_tokens,
+        "output_tokens": r.usage.completion_tokens,
     }
-    return answer, elapsed, usage
 
 
-def run_rlm(task, rlm_instance):
-    """Run RLM on the task."""
-    context = task["context_window_text"]
-    question = task["question"]
+def build_rlm(spec, logger):
+    """Build an RLM instance for the given MethodSpec.
 
-    start = time.time()
-    result = rlm_instance.completion(
-        prompt=context,
-        root_prompt=question,
-    )
-    elapsed = time.time() - start
+    For rlm_majority, install the majority-vote environment monkey-patch first.
+    For memory variants, build the backend + tools.
+    Returns (rlm_instance, memory_backend_or_None, counters_dict, custom_tools_or_None)."""
+    if spec.majority_n > 1:
+        install_majority_vote(spec.majority_n)
 
-    usage = result.usage_summary.to_dict() if result.usage_summary else {}
-    return result.response, elapsed, usage
-
-
-def main():
-    args = parse_args()
-
-    os.makedirs("results", exist_ok=True)
-    os.makedirs("logs", exist_ok=True)
-
-    if args.output is None:
-        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"results/oolong_{args.memory}_{ts}.jsonl"
-    else:
-        output_file = args.output
-
-    # Load tasks
-    tasks = load_tasks(args.num_tasks, args.context_len)
-    if not tasks:
-        print("No tasks found! Check dataset name and context length.")
-        return
-
-    # Print task info
-    for i, t in enumerate(tasks):
-        print(f"  Task {i+1}: {t['question'][:80]}...")
-        print(f"    Gold answer: {t['answer']}")
-        print(f"    Task type: {t['task']}, Answer type: {t['answer_type']}")
-        print()
-
-    # ── Setup memory backend + tools ────────────────────────────────────
-    backend = build_memory(args.memory)
+    backend = build_memory(spec.memory) if spec.memory else None
     custom_tools = None
     counters = {"write": 0, "read": 0}
     if backend is not None:
-        from rlm.memory.tools import make_memory_tools
         custom_tools = make_memory_tools(backend)
         custom_tools, counters = wrap_tools_with_counters(custom_tools)
 
-    # ── Setup RLM ───────────────────────────────────────────────────────
-    logger = RLMLogger(log_dir="./logs")
-
-    rlm_instance = RLM(
+    rlm = RLM(
         backend="openai",
         backend_kwargs={"model_name": PARENT_MODEL},
-        # Use GPT-5-mini for sub-calls
         other_backends=["openai"],
         other_backend_kwargs=[{"model_name": CHILD_MODEL}],
         environment="local",
@@ -248,113 +195,106 @@ def main():
         custom_tools=custom_tools,
         custom_sub_tools=custom_tools,
     )
+    return rlm, backend, counters
 
-    # ── Setup vanilla baseline client ───────────────────────────────────
+
+def run_rlm(task, rlm_instance, max_wall):
+    start = time.time()
+    with wall_clock_limit(max_wall):
+        res = rlm_instance.completion(prompt=task["context_window_text"], root_prompt=task["question"])
+    elapsed = time.time() - start
+    usage = res.usage_summary.to_dict() if res.usage_summary else {}
+    return res.response, elapsed, usage
+
+
+# ── Main ────────────────────────────────────────────────────────────────
+
+def main():
+    args = parse_args()
+    os.makedirs("results", exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
+
+    if args.output is None:
+        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
+        args.output = f"results/oolong_sweep_{ts}.jsonl"
+
+    tasks = load_tasks(args.num_tasks, args.context_len)
+    if not tasks:
+        print("No tasks found!")
+        return
+
+    print(f"\n=== OOLONG sweep ===")
+    print(f"Methods: {args.methods}")
+    print(f"Tasks:   {len(tasks)} at {args.context_len} tokens")
+    print(f"Wall-clock cap: {args.max_wall_s}s per task")
+    print(f"Output:  {args.output}\n")
+
     vanilla_client = OpenAI()
+    logger = RLMLogger(log_dir="./logs")
 
-    # ── Run benchmarks ──────────────────────────────────────────────────
-    results = []
+    for ti, task in enumerate(tasks):
+        print(f"\n{'='*70}\nTASK {ti+1}/{len(tasks)}  Q={task['question'][:70]}\n  gold={task['answer']}\n{'='*70}")
 
-    for i, task in enumerate(tasks):
-        print(f"\n{'='*60}")
-        print(f"TASK {i+1}/{len(tasks)}")
-        print(f"Question: {task['question']}")
-        print(f"Gold: {task['answer']}")
-        print(f"{'='*60}")
+        for method_name in args.methods:
+            spec = parse_method(method_name, majority_n=args.majority_n)
+            print(f"\n--- method={method_name} ---")
 
-        # Reset memory between tasks to prevent cross-task bleed
-        if backend is not None:
-            backend.reset()
-        counters["write"] = 0
-        counters["read"] = 0
+            row = {
+                "task_id": task["id"],
+                "context_window_id": task["context_window_id"],
+                "dataset": task["dataset"],
+                "context_len": task["context_len"],
+                "question": task["question"],
+                "gold_answer": task["answer"],
+                "method": method_name,
+                "majority_n": spec.majority_n,
+                "memory_backend": spec.memory,
+            }
 
-        # Vanilla baseline
-        print(f"\n--- Vanilla {PARENT_MODEL} ---")
-        try:
-            vanilla_answer, vanilla_time, vanilla_usage = run_vanilla_baseline(task, vanilla_client)
-            vanilla_score = synth_process_response(task, vanilla_answer, PARENT_MODEL)
-            print(f"  Answer: {vanilla_score['attempted_parse']}")
-            print(f"  Score: {vanilla_score['score']}")
-            print(f"  Time: {vanilla_time:.2f}s")
-        except Exception as e:
-            print(f"  ERROR: {e}")
-            vanilla_answer, vanilla_time, vanilla_usage = str(e), 0, {}
-            vanilla_score = {"score": 0, "attempted_parse": str(e), "parse_confidence": "error"}
+            try:
+                if not spec.use_rlm:
+                    ans, t, usage = run_vanilla(task, vanilla_client, args.max_wall_s)
+                    counters = {"write": 0, "read": 0}
+                else:
+                    rlm, backend, counters = build_rlm(spec, logger)
+                    try:
+                        ans, t, usage = run_rlm(task, rlm, args.max_wall_s)
+                    finally:
+                        try:
+                            rlm.close()
+                        except Exception:
+                            pass
+                        if backend is not None:
+                            try:
+                                backend.reset()
+                            except Exception:
+                                pass
 
-        # RLM
-        print(f"\n--- RLM ({PARENT_MODEL} + {CHILD_MODEL}) ---")
-        try:
-            rlm_answer, rlm_time, rlm_usage = run_rlm(task, rlm_instance)
-            rlm_score = synth_process_response(task, rlm_answer, f"RLM({PARENT_MODEL})")
-            print(f"  Answer: {rlm_score['attempted_parse']}")
-            print(f"  Score: {rlm_score['score']}")
-            print(f"  Time: {rlm_time:.2f}s")
-        except Exception as e:
-            print(f"  ERROR: {e}")
-            rlm_answer, rlm_time, rlm_usage = str(e), 0, {}
-            rlm_score = {"score": 0, "attempted_parse": str(e), "parse_confidence": "error"}
+                score = synth_process_response(task, ans, method_name)
+                print(f"  parsed={score['attempted_parse']!r} score={score['score']:.3f} t={t:.1f}s")
+                row.update({
+                    "answer": ans,
+                    "parsed": score["attempted_parse"],
+                    "parse_confidence": score["parse_confidence"],
+                    "score": score["score"],
+                    "time_s": t,
+                    "usage": usage,
+                    "memory_calls_write": counters["write"],
+                    "memory_calls_read": counters["read"],
+                    "error": None,
+                })
+            except TaskTimeout as e:
+                print(f"  TIMEOUT: {e}")
+                row.update({"answer": str(e), "parsed": None, "score": 0.0, "time_s": args.max_wall_s, "usage": {}, "memory_calls_write": 0, "memory_calls_read": 0, "error": "timeout"})
+            except Exception as e:
+                print(f"  ERROR: {type(e).__name__}: {e}")
+                row.update({"answer": str(e), "parsed": None, "score": 0.0, "time_s": 0, "usage": {}, "memory_calls_write": 0, "memory_calls_read": 0, "error": f"{type(e).__name__}: {e}"})
 
-        # Record result
-        result = {
-            "task_id": task["id"],
-            "dataset": task["dataset"],
-            "context_len": task["context_len"],
-            "question": task["question"],
-            "gold_answer": task["answer"],
-            "task_type": task["task"],
-            "answer_type": task["answer_type"],
-            "memory_backend": args.memory,
-            "memory_calls_write": counters["write"],
-            "memory_calls_read": counters["read"],
-            "vanilla": {
-                "answer": vanilla_answer,
-                "score": vanilla_score["score"],
-                "parsed": vanilla_score["attempted_parse"],
-                "confidence": vanilla_score["parse_confidence"],
-                "time_s": vanilla_time,
-                "usage": vanilla_usage,
-            },
-            "rlm": {
-                "answer": rlm_answer,
-                "score": rlm_score["score"],
-                "parsed": rlm_score["attempted_parse"],
-                "confidence": rlm_score["parse_confidence"],
-                "time_s": rlm_time,
-                "usage": rlm_usage,
-            },
-            "timestamp": dt_datetime.now().isoformat(),
-        }
-        results.append(result)
+            row["timestamp"] = dt_datetime.now().isoformat()
+            with open(args.output, "a") as f:
+                f.write(json.dumps(row) + "\n")
 
-        # Write incrementally
-        with open(output_file, "a") as f:
-            f.write(json.dumps(result) + "\n")
-
-    # ── Summary ─────────────────────────────────────────────────────────
-    print(f"\n{'='*60}")
-    print("SUMMARY")
-    print(f"{'='*60}")
-
-    vanilla_scores = [r["vanilla"]["score"] for r in results]
-    rlm_scores = [r["rlm"]["score"] for r in results]
-    vanilla_times = [r["vanilla"]["time_s"] for r in results]
-    rlm_times = [r["rlm"]["time_s"] for r in results]
-
-    print(f"Dataset: {DATASET_NAME}, Context: {args.context_len} tokens, Tasks: {len(results)}")
-    print(f"Memory backend: {args.memory}")
-    print(f"")
-    print(f"  Vanilla {PARENT_MODEL}:")
-    print(f"    Avg score: {sum(vanilla_scores)/len(vanilla_scores):.3f}")
-    print(f"    Avg time:  {sum(vanilla_times)/len(vanilla_times):.2f}s")
-    print(f"")
-    print(f"  RLM ({PARENT_MODEL} + {CHILD_MODEL}):")
-    print(f"    Avg score: {sum(rlm_scores)/len(rlm_scores):.3f}")
-    print(f"    Avg time:  {sum(rlm_times)/len(rlm_times):.2f}s")
-    print(f"")
-    print(f"Results saved to {output_file}")
-
-    # Cleanup
-    rlm_instance.close()
+    print(f"\nAll done. Results → {args.output}")
 
 
 if __name__ == "__main__":

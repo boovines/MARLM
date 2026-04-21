@@ -1,246 +1,162 @@
-"""
-MuSiQue benchmark: multi-hop QA that resists RLM's decomposition strategy.
+"""MuSiQue benchmark — all 5 methods against 2-hop QA with distractor paragraphs.
 
-Tests the hypothesis that OOLONG is cherry-picked for RLM's strengths.
-MuSiQue requires chaining 2-4 facts across paragraphs — each hop's answer
-is the input to the next hop. Independent chunking should hurt here.
+Methods: vanilla, rlm, rlm_majority, rlm_memory_flat, rlm_memory_graph.
 
-Runs:
-  1. Vanilla GPT-5 (direct call, full context)
-  2. RLM (GPT-5 parent + GPT-5-mini children)
-
-Scoring: SQuAD-style EM and F1 (max over answer aliases).
+Scoring: SQuAD-style EM + token-level F1, max over gold + aliases.
 
 Usage:
-    python benchmark_musique.py [--memory {none,flat,graph}] [--num-tasks N]
-                                [--output PATH]
+    python benchmark_musique.py \\
+        --methods vanilla,rlm,rlm_memory_flat \\
+        --num-tasks 5 --max-wall-s 600
 """
+from __future__ import annotations
 
+import argparse
+import json
 import os
 import re
-import json
-import time
 import string
-import argparse
+import time
 from collections import Counter
+from datetime import datetime as dt_datetime
+
 from datasets import load_dataset
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from rlm import RLM
-from rlm.logger import RLMLogger
+from rlm.bench.harness import (
+    METHODS,
+    TaskTimeout,
+    parse_method,
+    wall_clock_limit,
+    wrap_tools_with_counters,
+)
+from rlm.bench.majority import install_majority_vote
 from rlm.bench.memory_factory import build_memory
-from datetime import datetime as dt_datetime
+from rlm.logger import RLMLogger
+from rlm.memory import make_memory_tools
 
 load_dotenv()
 
-# ── Config ──────────────────────────────────────────────────────────────
-PARENT_MODEL = "gpt-5"           # root RLM model
-CHILD_MODEL = "gpt-5-mini"      # llm_query sub-call model
-NUM_HOPS = None                  # None = all, or 2/3/4 to filter
-MAX_ITERATIONS = 15              # RLM iteration cap
-MAX_DEPTH = 1                    # paper setting
-# ────────────────────────────────────────────────────────────────────────
+PARENT_MODEL = "gpt-5"
+CHILD_MODEL = "gpt-5-mini"
+NUM_HOPS = None
+MAX_ITERATIONS = 15
+MAX_DEPTH = 1
+
+MEMORY_HINT = (
+    " This question requires chaining facts across paragraphs (multi-hop). "
+    "Use memory_write to stash intermediate findings between hops (e.g. "
+    "memory_write('hop1_performer', 'Steve Hillage')), and memory_read to "
+    "retrieve them in later sub-calls. The memory persists across llm_query "
+    "calls, so sub-calls can share discoveries."
+)
 
 
-def parse_args():
-    p = argparse.ArgumentParser()
-    p.add_argument("--memory", choices=["none", "flat", "graph"], default="none")
-    p.add_argument("--num-tasks", type=int, default=5)
-    p.add_argument("--context-len", type=int, default=16384, help="ignored for MuSiQue")
-    p.add_argument("--output", type=str, default=None)
-    return p.parse_args()
-
-
-# ── SQuAD-style scoring ────────────────────────────────────────────────
+# ── Scoring ────────────────────────────────────────────────────────────
 
 def normalize_answer(s):
-    """Lowercase, strip articles/punctuation/whitespace."""
     s = s.lower()
-    # Remove articles
-    s = re.sub(r'\b(a|an|the)\b', ' ', s)
-    # Remove punctuation
-    s = s.translate(str.maketrans('', '', string.punctuation))
-    # Collapse whitespace
-    s = ' '.join(s.split())
-    return s
+    s = re.sub(r"\b(a|an|the)\b", " ", s)
+    s = s.translate(str.maketrans("", "", string.punctuation))
+    return " ".join(s.split())
 
 
-def exact_match(prediction, gold_answers):
-    """EM: 1 if normalized prediction matches any gold answer."""
-    norm_pred = normalize_answer(prediction)
-    return max(int(normalize_answer(g) == norm_pred) for g in gold_answers)
+def exact_match(pred, golds):
+    np = normalize_answer(pred)
+    return max(int(normalize_answer(g) == np) for g in golds)
 
 
-def f1_score(prediction, gold_answers):
-    """Token-level F1, max over gold answers."""
-    norm_pred = normalize_answer(prediction)
-    pred_tokens = norm_pred.split()
-
-    best_f1 = 0.0
-    for gold in gold_answers:
-        gold_tokens = normalize_answer(gold).split()
-        common = Counter(pred_tokens) & Counter(gold_tokens)
-        num_common = sum(common.values())
-
-        if num_common == 0:
+def f1_score(pred, golds):
+    np_ = normalize_answer(pred)
+    pt = np_.split()
+    best = 0.0
+    for g in golds:
+        gt = normalize_answer(g).split()
+        common = Counter(pt) & Counter(gt)
+        nc = sum(common.values())
+        if nc == 0:
             continue
-
-        precision = num_common / len(pred_tokens) if pred_tokens else 0
-        recall = num_common / len(gold_tokens) if gold_tokens else 0
-        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
-        best_f1 = max(best_f1, f1)
-
-    return best_f1
+        p = nc / len(pt) if pt else 0
+        r = nc / len(gt) if gt else 0
+        f1 = 2 * p * r / (p + r) if (p + r) > 0 else 0
+        best = max(best, f1)
+    return best
 
 
-def score_prediction(prediction, gold_answer, gold_aliases):
-    """Score a prediction against gold answer + aliases."""
-    all_golds = [gold_answer] + (gold_aliases or [])
-    return {
-        "em": exact_match(prediction, all_golds),
-        "f1": f1_score(prediction, all_golds),
-    }
+def score_prediction(pred, gold, aliases):
+    golds = [gold] + (aliases or [])
+    return {"em": exact_match(pred, golds), "f1": f1_score(pred, golds)}
 
 
-# ── Data loading ───────────────────────────────────────────────────────
+# ── Tasks ──────────────────────────────────────────────────────────────
 
 def format_context(paragraphs):
-    """Concatenate paragraphs into a single context string."""
-    parts = []
-    for i, p in enumerate(paragraphs):
-        title = p.get("title", f"Paragraph {i+1}")
-        text = p["paragraph_text"]
-        parts.append(f"[{title}]\n{text}")
-    return "\n\n".join(parts)
+    return "\n\n".join(f"[{p.get('title', f'Paragraph {i+1}')}]\n{p['paragraph_text']}" for i, p in enumerate(paragraphs))
 
 
 def load_tasks(num_tasks):
-    """Load MuSiQue answerable tasks from HuggingFace."""
     print("Loading MuSiQue from HuggingFace...")
     ds = load_dataset("bdsaglam/musique", "answerable", split="validation")
-    print(f"  Total validation examples: {len(ds)}")
-
-    # Optional: filter by number of hops
+    print(f"  total: {len(ds)}")
     if NUM_HOPS is not None:
         ds = ds.filter(lambda x: len(x["question_decomposition"]) == NUM_HOPS)
-        print(f"  After filtering to {NUM_HOPS}-hop: {len(ds)}")
-
-    # Take first num_tasks
     n = min(num_tasks, len(ds))
     tasks = [ds[i] for i in range(n)]
-    print(f"  Using {n} tasks")
-
-    # Print hop distribution
-    hop_counts = Counter(len(t["question_decomposition"]) for t in tasks)
-    for h, c in sorted(hop_counts.items()):
-        print(f"    {h}-hop: {c}")
-
+    print(f"  using {n} tasks; hop distribution: {dict(Counter(len(t['question_decomposition']) for t in tasks))}")
     return tasks
 
 
-def wrap_tools_with_counters(tools):
-    """Wrap memory_write/memory_read tool callables with a counter.
-    Returns (tools_dict, counters_dict). Mutates input dict."""
-    counters = {"write": 0, "read": 0}
-    if not tools:
-        return tools, counters
+# ── Args ───────────────────────────────────────────────────────────────
 
-    def make_wrapper(fn, key):
-        def wrapper(*args, **kwargs):
-            counters[key] += 1
-            return fn(*args, **kwargs)
-        return wrapper
-
-    for name, entry in list(tools.items()):
-        if "write" in name:
-            counter_key = "write"
-        elif "read" in name:
-            counter_key = "read"
-        else:
-            continue
-
-        if isinstance(entry, dict) and "tool" in entry:
-            entry["tool"] = make_wrapper(entry["tool"], counter_key)
-        elif callable(entry):
-            tools[name] = make_wrapper(entry, counter_key)
-
-    return tools, counters
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--methods", type=str, default="vanilla,rlm,rlm_memory_flat",
+                   help=f"comma-sep subset of {METHODS}")
+    p.add_argument("--num-tasks", type=int, default=5)
+    p.add_argument("--max-wall-s", type=int, default=600)
+    p.add_argument("--majority-n", type=int, default=3)
+    p.add_argument("--output", type=str, default=None)
+    args = p.parse_args()
+    ms = [m.strip() for m in args.methods.split(",") if m.strip()]
+    bad = [m for m in ms if m not in METHODS]
+    if bad:
+        raise SystemExit(f"unknown method(s): {bad}; allowed: {METHODS}")
+    args.methods = ms
+    return args
 
 
 # ── Runners ────────────────────────────────────────────────────────────
 
-def run_vanilla_baseline(question, context, client):
-    """Run vanilla GPT-5 on the full context."""
-    prompt = f"Answer the following question based on the provided context. Give only the answer, no explanation.\n\nContext:\n{context}\n\nQuestion: {question}\n\nAnswer:"
-
-    start = time.time()
-    response = client.chat.completions.create(
-        model=PARENT_MODEL,
-        messages=[{"role": "user", "content": prompt}],
+def run_vanilla(question, context, client, max_wall):
+    prompt = (
+        f"Answer the following question based on the provided context. "
+        f"Give only the answer, no explanation.\n\nContext:\n{context}\n\nQuestion: {question}\n\nAnswer:"
     )
+    start = time.time()
+    with wall_clock_limit(max_wall):
+        r = client.chat.completions.create(
+            model=PARENT_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+        )
     elapsed = time.time() - start
-
-    answer = response.choices[0].message.content.strip()
-    usage = {
-        "input_tokens": response.usage.prompt_tokens,
-        "output_tokens": response.usage.completion_tokens,
+    return r.choices[0].message.content.strip(), elapsed, {
+        "input_tokens": r.usage.prompt_tokens,
+        "output_tokens": r.usage.completion_tokens,
     }
-    return answer, elapsed, usage
 
 
-def run_rlm(question, context, rlm_instance):
-    """Run RLM on the task."""
-    start = time.time()
-    result = rlm_instance.completion(
-        prompt=context,
-        root_prompt=question,
-    )
-    elapsed = time.time() - start
-
-    usage = result.usage_summary.to_dict() if result.usage_summary else {}
-    return result.response, elapsed, usage
-
-
-# ── Main ───────────────────────────────────────────────────────────────
-
-def main():
-    args = parse_args()
-
-    os.makedirs("results", exist_ok=True)
-    os.makedirs("logs", exist_ok=True)
-
-    if args.output is None:
-        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"results/musique_{args.memory}_{ts}.jsonl"
-    else:
-        output_file = args.output
-
-    tasks = load_tasks(args.num_tasks)
-    if not tasks:
-        print("No tasks found!")
-        return
-
-    # Preview
-    for i, t in enumerate(tasks[:3]):
-        n_hops = len(t["question_decomposition"])
-        print(f"  Example {i+1} ({n_hops}-hop): {t['question']}")
-        print(f"    Answer: {t['answer']}")
-        print(f"    Paragraphs: {len(t['paragraphs'])}")
-        print()
-
-    # ── Setup memory backend + tools ────────────────────────────────────
-    backend = build_memory(args.memory)
-    custom_tools = None
+def build_rlm(spec, logger):
+    if spec.majority_n > 1:
+        install_majority_vote(spec.majority_n)
+    backend = build_memory(spec.memory) if spec.memory else None
+    tools = None
     counters = {"write": 0, "read": 0}
     if backend is not None:
-        from rlm.memory.tools import make_memory_tools
-        custom_tools = make_memory_tools(backend)
-        custom_tools, counters = wrap_tools_with_counters(custom_tools)
-
-    # ── Setup RLM ───────────────────────────────────────────────────────
-    logger = RLMLogger(log_dir="./logs")
-    rlm_instance = RLM(
+        tools = make_memory_tools(backend)
+        tools, counters = wrap_tools_with_counters(tools)
+    rlm = RLM(
         backend="openai",
         backend_kwargs={"model_name": PARENT_MODEL},
         other_backends=["openai"],
@@ -250,125 +166,114 @@ def main():
         max_iterations=MAX_ITERATIONS,
         verbose=True,
         logger=logger,
-        custom_tools=custom_tools,
-        custom_sub_tools=custom_tools,
+        custom_tools=tools,
+        custom_sub_tools=tools,
     )
+    return rlm, backend, counters
+
+
+def run_rlm(question, context, rlm_instance, max_wall, memory_enabled):
+    root_prompt = question + (MEMORY_HINT if memory_enabled else "")
+    start = time.time()
+    with wall_clock_limit(max_wall):
+        res = rlm_instance.completion(prompt=context, root_prompt=root_prompt)
+    elapsed = time.time() - start
+    usage = res.usage_summary.to_dict() if res.usage_summary else {}
+    return res.response, elapsed, usage
+
+
+# ── Main ───────────────────────────────────────────────────────────────
+
+def main():
+    args = parse_args()
+    os.makedirs("results", exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
+    if args.output is None:
+        ts = dt_datetime.now().strftime("%Y%m%d_%H%M%S")
+        args.output = f"results/musique_sweep_{ts}.jsonl"
+
+    tasks = load_tasks(args.num_tasks)
+    if not tasks:
+        print("No tasks found!")
+        return
+
+    print(f"\n=== MuSiQue sweep ===")
+    print(f"Methods: {args.methods}")
+    print(f"Tasks:   {len(tasks)}")
+    print(f"Wall-clock cap: {args.max_wall_s}s per task")
+    print(f"Output:  {args.output}\n")
 
     vanilla_client = OpenAI()
+    logger = RLMLogger(log_dir="./logs")
 
-    # ── Run benchmarks ──────────────────────────────────────────────────
-    results = []
-
-    for i, task in enumerate(tasks):
+    for ti, task in enumerate(tasks):
         question = task["question"]
         context = format_context(task["paragraphs"])
         gold = task["answer"]
-        aliases = task.get("answer_aliases", [])
+        aliases = task.get("answer_aliases", []) or []
         n_hops = len(task["question_decomposition"])
 
-        print(f"\n{'='*60}")
-        print(f"TASK {i+1}/{len(tasks)} ({n_hops}-hop)")
-        print(f"Question: {question}")
-        print(f"Gold: {gold}")
-        if aliases:
-            print(f"Aliases: {aliases}")
-        print(f"{'='*60}")
+        print(f"\n{'='*70}\nTASK {ti+1}/{len(tasks)} ({n_hops}-hop)  {question}\n  gold={gold!r}\n{'='*70}")
 
-        # Reset memory between tasks to prevent cross-task bleed
-        if backend is not None:
-            backend.reset()
-        counters["write"] = 0
-        counters["read"] = 0
+        for method_name in args.methods:
+            spec = parse_method(method_name, majority_n=args.majority_n)
+            print(f"\n--- method={method_name} ---")
 
-        result = {
-            "task_id": task["id"],
-            "question": question,
-            "gold_answer": gold,
-            "answer_aliases": aliases,
-            "n_hops": n_hops,
-            "n_paragraphs": len(task["paragraphs"]),
-            "decomposition": [
-                {"question": d["question"], "answer": d["answer"]}
-                for d in task["question_decomposition"]
-            ],
-            "memory_backend": args.memory,
-        }
-
-        # ── Vanilla baseline ────────────────────────────────────────────
-        print(f"\n--- Vanilla {PARENT_MODEL} ---")
-        try:
-            ans, t_elapsed, usage = run_vanilla_baseline(question, context, vanilla_client)
-            scores = score_prediction(ans, gold, aliases)
-            print(f"  Answer: {ans}")
-            print(f"  EM: {scores['em']}, F1: {scores['f1']:.3f}")
-            print(f"  Time: {t_elapsed:.2f}s")
-            result["vanilla"] = {
-                "answer": ans, **scores,
-                "time_s": t_elapsed, "usage": usage,
+            row = {
+                "task_id": task["id"],
+                "question": question,
+                "gold_answer": gold,
+                "answer_aliases": aliases,
+                "n_hops": n_hops,
+                "n_paragraphs": len(task["paragraphs"]),
+                "method": method_name,
+                "majority_n": spec.majority_n,
+                "memory_backend": spec.memory,
             }
-        except Exception as e:
-            print(f"  ERROR: {e}")
-            result["vanilla"] = {"answer": str(e), "em": 0, "f1": 0, "time_s": 0}
 
-        # ── RLM ─────────────────────────────────────────────────────────
-        print(f"\n--- RLM ({PARENT_MODEL} + {CHILD_MODEL}) ---")
-        try:
-            ans, t_elapsed, usage = run_rlm(question, context, rlm_instance)
-            scores = score_prediction(ans, gold, aliases)
-            print(f"  Answer: {ans}")
-            print(f"  EM: {scores['em']}, F1: {scores['f1']:.3f}")
-            print(f"  Time: {t_elapsed:.2f}s")
-            result["rlm"] = {
-                "answer": ans, **scores,
-                "time_s": t_elapsed, "usage": usage,
-            }
-        except Exception as e:
-            print(f"  ERROR: {e}")
-            result["rlm"] = {"answer": str(e), "em": 0, "f1": 0, "time_s": 0}
+            try:
+                if not spec.use_rlm:
+                    ans, t, usage = run_vanilla(question, context, vanilla_client, args.max_wall_s)
+                    counters = {"write": 0, "read": 0}
+                else:
+                    rlm, backend, counters = build_rlm(spec, logger)
+                    try:
+                        ans, t, usage = run_rlm(question, context, rlm, args.max_wall_s, memory_enabled=backend is not None)
+                    finally:
+                        try:
+                            rlm.close()
+                        except Exception:
+                            pass
+                        if backend is not None:
+                            try:
+                                backend.reset()
+                            except Exception:
+                                pass
 
-        result["memory_calls_write"] = counters["write"]
-        result["memory_calls_read"] = counters["read"]
-        result["timestamp"] = dt_datetime.now().isoformat()
-        results.append(result)
+                scores = score_prediction(ans, gold, aliases)
+                print(f"  answer={ans[:100]!r}  EM={scores['em']} F1={scores['f1']:.3f} t={t:.1f}s")
+                row.update({
+                    "answer": ans,
+                    "em": scores["em"],
+                    "f1": scores["f1"],
+                    "time_s": t,
+                    "usage": usage,
+                    "memory_calls_write": counters["write"],
+                    "memory_calls_read": counters["read"],
+                    "error": None,
+                })
+            except TaskTimeout as e:
+                print(f"  TIMEOUT: {e}")
+                row.update({"answer": str(e), "em": 0, "f1": 0.0, "time_s": args.max_wall_s, "usage": {}, "memory_calls_write": 0, "memory_calls_read": 0, "error": "timeout"})
+            except Exception as e:
+                print(f"  ERROR: {type(e).__name__}: {e}")
+                row.update({"answer": str(e), "em": 0, "f1": 0.0, "time_s": 0, "usage": {}, "memory_calls_write": 0, "memory_calls_read": 0, "error": f"{type(e).__name__}: {e}"})
 
-        # Write incrementally
-        with open(output_file, "a") as f:
-            f.write(json.dumps(result) + "\n")
+            row["timestamp"] = dt_datetime.now().isoformat()
+            with open(args.output, "a") as f:
+                f.write(json.dumps(row) + "\n")
 
-    # ── Summary ─────────────────────────────────────────────────────────
-    print(f"\n{'='*60}")
-    print("SUMMARY")
-    print(f"{'='*60}")
-    print(f"Tasks: {len(results)}")
-    print(f"Memory backend: {args.memory}")
-
-    for method in ["vanilla", "rlm"]:
-        label = f"Vanilla {PARENT_MODEL}" if method == "vanilla" else f"RLM ({PARENT_MODEL} + {CHILD_MODEL})"
-        ems = [r[method]["em"] for r in results if method in r]
-        f1s = [r[method]["f1"] for r in results if method in r]
-        times = [r[method]["time_s"] for r in results if method in r]
-
-        if ems:
-            print(f"\n  {label}:")
-            print(f"    EM:       {sum(ems)/len(ems):.3f} ({sum(ems)}/{len(ems)})")
-            print(f"    Avg F1:   {sum(f1s)/len(f1s):.3f}")
-            print(f"    Avg time: {sum(times)/len(times):.2f}s")
-
-    # Per-hop breakdown
-    hop_values = sorted(set(r["n_hops"] for r in results))
-    if len(hop_values) > 1:
-        print(f"\n  Per-hop breakdown:")
-        for n_hop in hop_values:
-            subset = [r for r in results if r["n_hops"] == n_hop]
-            for method in ["vanilla", "rlm"]:
-                ems = [r[method]["em"] for r in subset if method in r]
-                f1s = [r[method]["f1"] for r in subset if method in r]
-                label = "Vanilla" if method == "vanilla" else "RLM"
-                if ems:
-                    print(f"    {n_hop}-hop {label}: EM={sum(ems)/len(ems):.3f}, F1={sum(f1s)/len(f1s):.3f} (n={len(ems)})")
-
-    print(f"\nResults saved to {output_file}")
-    rlm_instance.close()
+    print(f"\nAll done. Results → {args.output}")
 
 
 if __name__ == "__main__":

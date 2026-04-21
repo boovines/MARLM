@@ -8,8 +8,43 @@ from datetime import datetime, timezone
 
 from graphiti_core import Graphiti
 from graphiti_core.driver.kuzu_driver import KuzuDriver
+from graphiti_core.search.search_config import (
+    EdgeReranker,
+    EdgeSearchConfig,
+    EdgeSearchMethod,
+    EpisodeReranker,
+    EpisodeSearchConfig,
+    EpisodeSearchMethod,
+    NodeReranker,
+    NodeSearchConfig,
+    NodeSearchMethod,
+    SearchConfig,
+)
 
 from rlm.memory.base import MemoryBackend, MemoryHit
+
+
+# Hybrid search config: BM25 keyword + cosine embeddings over edges AND nodes,
+# reranked by reciprocal-rank fusion (no LLM cross-encoder → cheap). Returning
+# nodes is critical: Graphiti merges multi-episode facts about the same entity
+# into the node's `summary`, which is what bridges multi-hop queries like
+# "spouse of the Green performer" (Steve Hillage's node summary contains BOTH
+# "performed the song Green" AND "married Miquette Giraudy").
+_HYBRID_SEARCH_CONFIG = SearchConfig(
+    edge_config=EdgeSearchConfig(
+        search_methods=[EdgeSearchMethod.bm25, EdgeSearchMethod.cosine_similarity],
+        reranker=EdgeReranker.rrf,
+    ),
+    node_config=NodeSearchConfig(
+        search_methods=[NodeSearchMethod.bm25, NodeSearchMethod.cosine_similarity],
+        reranker=NodeReranker.rrf,
+    ),
+    episode_config=EpisodeSearchConfig(
+        search_methods=[EpisodeSearchMethod.bm25],
+        reranker=EpisodeReranker.rrf,
+    ),
+    limit=10,
+)
 
 
 class GraphitiBackend(MemoryBackend):
@@ -57,21 +92,46 @@ class GraphitiBackend(MemoryBackend):
 
     def read(self, query: str, top_k: int = 5) -> list[MemoryHit]:
         assert self._graphiti is not None
-        edges = self._loop.run_until_complete(
-            self._graphiti.search(query, num_results=top_k)
+        # Use the richer .search_() with hybrid BM25+cosine over edges AND nodes.
+        # Node summaries carry merged multi-episode facts about each entity,
+        # which is what enables multi-hop bridging through the node's summary.
+        config = _HYBRID_SEARCH_CONFIG.model_copy(update={"limit": max(top_k * 2, 10)})
+        results = self._loop.run_until_complete(
+            self._graphiti.search_(query=query, config=config)
         )
-        return [
-            MemoryHit(
-                key=edge.fact[:80],
-                value=edge.fact,
-                score=1.0,
-                metadata={
-                    "src": edge.source_node_uuid,
-                    "tgt": edge.target_node_uuid,
-                },
+
+        hits: list[MemoryHit] = []
+
+        # Nodes first — their summaries bridge multi-hop queries.
+        for node in results.nodes:
+            summary = (node.summary or "").strip()
+            if not summary:
+                continue
+            hits.append(
+                MemoryHit(
+                    key=f"node:{node.name}",
+                    value=summary,
+                    score=1.0,
+                    metadata={"kind": "node", "uuid": node.uuid, "name": node.name},
+                )
             )
-            for edge in edges
-        ]
+
+        # Then edges — single-hop facts.
+        for edge in results.edges:
+            hits.append(
+                MemoryHit(
+                    key=f"edge:{edge.fact[:80]}",
+                    value=edge.fact,
+                    score=1.0,
+                    metadata={
+                        "kind": "edge",
+                        "src": edge.source_node_uuid,
+                        "tgt": edge.target_node_uuid,
+                    },
+                )
+            )
+
+        return hits[:top_k]
 
     def reset(self) -> None:
         if self._graphiti is not None:
