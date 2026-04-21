@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "task_id": "2hop__460946_294723",
+    "question": "Who is the spouse of the Green performer?",
+    "gold_answer": "Miquette Giraudy",
+    "source": "simulated",
+    "generated_at": "2026-04-21T03:26:36.136017+00:00"
+  },
+  "store": {
+    "hop1_question": "Who is the performer of the song 'Green'?",
+    "hop1_performer": "Steve Hillage",
+    "hop1_source": "Section 'Green (Steve Hillage album)' \u2014 Steve Hillage performed this album.",
+    "hop2_question": "Who is Steve Hillage's spouse?",
+    "hop2_spouse": "Miquette Giraudy",
+    "hop2_source": "Biographical paragraph: 'Steve Hillage married Miquette Giraudy.'",
+    "final_answer": "Miquette Giraudy"
+  }
+}

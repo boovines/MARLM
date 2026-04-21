@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "task_id": "2hop__460946_294723",
+    "question": "Who is the spouse of the Green performer?",
+    "gold_answer": "Miquette Giraudy",
+    "source": "simulated",
+    "generated_at": "2026-04-21T03:27:16.588617+00:00"
+  },
+  "nodes": [
+    {
+      "id": "b04a72ea-8c2d-42dc-bd36-6ee16b815d9e",
+      "name": "Steve Hillage",
+      "summary": "Steve Hillage performed the song Green.\nSteve Hillage is a British progressive-rock guitarist\nSteve Hillage married Miquette Giraudy.\nMiquette Giraudy is a long-time musical collaborator of Steve Hillage.",
+      "kind": "Entity"
+    },
+    {
+      "id": "75392dce-fefc-451d-89c2-cc3f7a75ba55",
+      "name": "Green",
+      "summary": "Steve Hillage performed the song Green.",
+      "kind": "Entity"
+    },
+    {
+      "id": "286b5f8d-6b37-411c-93bc-f46fc77d7fe0",
+      "name": "British progressive-rock guitarist",
+      "summary": "Steve Hillage is a British progressive-rock guitarist",
+      "kind": "Entity"
+    },
+    {
+      "id": "052f237a-7a6c-4c30-beb7-3e99d64c67df",
+      "name": "Miquette Giraudy",
+      "summary": "Steve Hillage married Miquette Giraudy.\nMiquette Giraudy is a long-time musical collaborator of Steve Hillage.",
+      "kind": "Entity"
+    }
+  ],
+  "edges": [
+    {
+      "source": "052f237a-7a6c-4c30-beb7-3e99d64c67df",
+      "target": "b04a72ea-8c2d-42dc-bd36-6ee16b815d9e",
+      "fact": "Miquette Giraudy is a long-time musical collaborator of Steve Hillage.",
+      "name": "IS_MUSICAL_COLLABORATOR_OF"
+    },
+    {
+      "source": "b04a72ea-8c2d-42dc-bd36-6ee16b815d9e",
+      "target": "75392dce-fefc-451d-89c2-cc3f7a75ba55",
+      "fact": "Steve Hillage performed the song Green.",
+      "name": "PERFORMED"
+    },
+    {
+      "source": "b04a72ea-8c2d-42dc-bd36-6ee16b815d9e",
+      "target": "286b5f8d-6b37-411c-93bc-f46fc77d7fe0",
+      "fact": "Steve Hillage is a British progressive-rock guitarist",
+      "name": "IS_A"
+    },
+    {
+      "source": "b04a72ea-8c2d-42dc-bd36-6ee16b815d9e",
+      "target": "052f237a-7a6c-4c30-beb7-3e99d64c67df",
+      "fact": "Steve Hillage married Miquette Giraudy.",
+      "name": "MARRIED_TO"
+    }
+  ]
+}
