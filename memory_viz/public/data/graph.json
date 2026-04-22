@@ -1,2173 +1,307 @@
 {
   "meta": {
-    "task_id": "3hop1__454441_55349_651302",
-    "question": "What is the birthplace of the man who does the voice of Stan on the series that includes the episode The Hobbit?",
-    "gold_answer": "Denver",
-    "source": "dense / MuSiQue task 3hop1__454441_55349_651302 (3-hop)",
-    "generated_at": "2026-04-21T20:09:36.977137+00:00"
+    "task_id": "synthetic_niah",
+    "question": "What is Dr. Alice Chen's access code?",
+    "gold_answer": "7-ECHO-4",
+    "source": "niah (synthetic haystack, 1 needle + 19 filler)",
+    "generated_at": "2026-04-22T18:27:38.383780+00:00"
   },
   "nodes": [
     {
-      "id": "2e1a6edf-79f4-4b9c-9ddc-0278eb467c26",
-      "name": "The Hobbit (South Park)",
-      "summary": "The Hobbit (South Park) is an episode of the South Park television series\nThe Hobbit (South Park) premiered on Comedy Central in the United States\nThe Hobbit (South Park) centers on Wendy Testaburger's story about media impact on body image\nThe Hobbit (South Park) features Kanye West who crusades to prove Kim Kardashian is not a hobbit",
+      "id": "a6a1e53b-3bf9-4a63-924f-afca234f3e9f",
+      "name": "The sky",
+      "summary": "The sky was cloudy and overcast throughout the day.",
       "kind": "Entity"
     },
     {
-      "id": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "name": "The Hobbit",
-      "summary": "\"The Hobbit\" is the tenth episode of South Park's 17th season, aired on December 11, 2013. It features Wendy Testaburger's campaign on media influence on body image and Kanye West's attempt to prove Kim Kardashian is not a hobbit.\nJohn Bell acted in The Hobbit film series.\nMikael Persbrandt played the role of Beorn in The Hobbit.\nThe character Beorn appears in The Hobbit.\nThe character Beorn appears in The Hobbit.\nMikael Persbrandt played the role of Beorn in The Hobbit.\nThe character Beorn appears in The Hobbit.\nThe character Beorn appears in The Hobbit.\nAidan Turner is known for playing the role of K\u00edli in The Hobbit.\nAidan Turner appeared in the three-part fantasy film The Hobbit.\nAidan Turner is known for playing the role of K\u00edli in The Hobbit.\nAidan Turner appeared in the three-part fantasy film The Hobbit.",
+      "id": "be0ef67c-4e29-4eb5-86e4-dc60e43ac624",
+      "name": "Speaker",
+      "summary": "Rain fell lightly during the afternoon hours as observed by the Speaker\nThe door made a creaking sound as it shut, which was heard somewhere in the distance, presumably affecting the Speaker.",
       "kind": "Entity"
     },
     {
-      "id": "cc66101a-1c85-4b56-9a84-c65843bb678f",
-      "name": "South Park",
-      "summary": "The Hobbit (South Park) is an episode of the South Park television series\nDian Bachar has made occasional appearances on South Park.",
+      "id": "1dc41489-4302-427f-b342-52a910116821",
+      "name": "rain",
+      "summary": "Rain fell lightly during the afternoon hours as observed by the Speaker",
       "kind": "Entity"
     },
     {
-      "id": "62f24986-ee1f-47b6-ad20-5f9098edb618",
-      "name": "Wendy Testaburger",
-      "summary": "The Hobbit (South Park) centers on Wendy Testaburger's story about media impact on body image",
+      "id": "f2c28e0d-0c5e-437a-9c83-fd9b72db1d04",
+      "name": "A gentle breeze",
+      "summary": "A gentle breeze moved through the empty streets.",
       "kind": "Entity"
     },
     {
-      "id": "16958cb1-9558-4247-aca3-41aef0a9fddc",
-      "name": "Kanye West",
-      "summary": "The Hobbit (South Park) features Kanye West who crusades to prove Kim Kardashian is not a hobbit\nKanye West is the fianc\u00e9 of Kim Kardashian",
+      "id": "ddd3477b-47ba-4cca-9109-976b22ca9bbb",
+      "name": "empty streets",
+      "summary": "A gentle breeze moved through the empty streets.",
       "kind": "Entity"
     },
     {
-      "id": "76c85449-3337-4cae-a293-da8dabeb848a",
-      "name": "Kim Kardashian",
-      "summary": "Kanye West is the fianc\u00e9 of Kim Kardashian",
+      "id": "fa21a304-bad4-4488-a2d8-a166d2f10595",
+      "name": "The grass",
+      "summary": "The grass remained wet from the morning dew.",
       "kind": "Entity"
     },
     {
-      "id": "c6ecce9c-9a56-4d09-8968-3d8f774362c6",
-      "name": "Comedy Central",
-      "summary": "The Hobbit (South Park) premiered on Comedy Central in the United States",
+      "id": "0d600ed4-2302-4561-842e-185b446f53fd",
+      "name": "morning dew",
+      "summary": "The grass remained wet from the morning dew.",
       "kind": "Entity"
     },
     {
-      "id": "d88301a8-b103-48b6-9d60-07420ac4fa9a",
-      "name": "Dog with a Blog",
-      "summary": "Stan, the dog, secretly blogs, talks, and is close to Avery. He hates noisy pomeranians, loves poodles, and has a toy monkey named Robert. His secret is revealed in 'The Kids Find Out Stan Blogs'.",
+      "id": "de7ff524-a602-42b3-83e1-7b2700561626",
+      "name": "Small birds",
+      "summary": "Small birds chirped intermittently in the early light.",
       "kind": "Entity"
     },
     {
-      "id": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "name": "Stan",
-      "summary": "Stan is the James - Jennings family's new dog who blogs and talks.\nStephen Full is the voice of Stan.\nStan keeps his secret of talking from Ellen.\nStan keeps his secret of talking from Bennett.\nAvery is one of the only people who know Stan can talk and is his favorite child because they talk the most.\nTyler is one of the only people who know Stan can talk.\nChloe is one of the only people who know Stan can talk.\nKarl is one of the only people who know Stan can talk.\nGrandma James is one of the only people who know Stan can talk.\nStan hates noisy pomeranians.\nStan has a deep love of poodles.\nStan likes the game Realm of the Tower, shown in the episode World of Woofcraft.\nStan has a beloved toy monkey named Robert who is his companion.\nAvery called Stan 'just a dog' in the episode Stan Runs Away, which Stan is sensitive about.\nAvery and the other children soon discovered Stan's blog in the episode The Kids Find Out Stan Blogs after a year of his secret blogging.\nArnaud Joyet plays the character Stan.\nTrey Parker provides the voice for the character Stan Marsh.\nSteven Anita \"Steve\" Smith is the son of Stan Smith\nGrunkle Stan is voiced by Alex Hirsch.\nSteve Lawton acts as the character Stan in Seed of Chucky.\nStan blames Francine for not getting into heaven, leading to Francine ending their relationship.\nStan often yells insults at Barry Robinson about his weight without knowing why.\nDeranged Barry Robinson attempts to replace Steve within Stan's immediate family.\nBarry Robinson tries to eliminate anyone who might come between him and Stan during his madness.",
+      "id": "45346e5a-6be6-44e8-9b84-78483ffdbcde",
+      "name": "The coffee in the cup",
+      "summary": "The coffee in the cup had gone cold by noon.",
       "kind": "Entity"
     },
     {
-      "id": "4f3f724d-a95d-4de1-8e40-ac9e03ecdf16",
-      "name": "Stephen Full",
-      "summary": "Stephen Full is the voice of Stan.",
+      "id": "72e028ba-d127-4e8b-8694-bd4953417194",
+      "name": "Leaves",
+      "summary": "Leaves rustled softly when the wind increased in intensity.",
       "kind": "Entity"
     },
     {
-      "id": "256cb21f-5528-445d-a662-ecf474c75eb0",
-      "name": "James - Jennings family",
-      "summary": "Stan is the James - Jennings family's new dog who blogs and talks.",
+      "id": "c40f543b-75ce-4e82-9b59-d7d052bbd02b",
+      "name": "Wind",
+      "summary": "Leaves rustled softly when the wind increased in intensity.",
       "kind": "Entity"
     },
     {
-      "id": "031a5b75-7206-4c1b-b968-b0db872cd645",
-      "name": "Ellen",
-      "summary": "Stan keeps his secret of talking from Ellen.",
+      "id": "40b846cc-7d30-481f-8ea2-cf8975c73667",
+      "name": "door",
+      "summary": "The door made a creaking sound as it shut, which was heard somewhere in the distance, presumably affecting the Speaker.",
       "kind": "Entity"
     },
     {
-      "id": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "name": "Bennett",
-      "summary": "Stan keeps his secret of talking from Bennett.\nJonathan Manu Bennett portrays the character Crixus in the TV series Spartacus.\nJonathan Manu Bennett portrays the character Allanon in The Shannara Chronicles.\nJonathan Manu Bennett portrays Slade Wilson / Deathstroke in the TV series Arrow.\nJonathan Manu Bennett portrays Azog the Defiler in The Hobbit film trilogy.\nJonathan Manu Bennett portrays the character Crixus in the TV series Spartacus.\nJonathan Manu Bennett portrays the character Allanon in The Shannara Chronicles.\nJonathan Manu Bennett portrays Slade Wilson / Deathstroke in the TV series Arrow.\nJonathan Manu Bennett portrays Azog the Defiler in The Hobbit film trilogy.",
+      "id": "b70063f7-e670-4682-a109-a154143db10b",
+      "name": "The street lamps",
+      "summary": "The street lamps flickered once and then steadied during the overcast day.",
       "kind": "Entity"
     },
     {
-      "id": "3c6fc554-874c-48ac-b0d0-642a1e47c2b6",
-      "name": "Avery",
-      "summary": "Avery is one of the only people who know Stan can talk and is his favorite child because they talk the most.\nAvery called Stan 'just a dog' in the episode Stan Runs Away, which Stan is sensitive about.\nAvery and the other children soon discovered Stan's blog in the episode The Kids Find Out Stan Blogs after a year of his secret blogging.",
+      "id": "02558ebe-ebd2-40a6-9672-253d7412583b",
+      "name": "Paper bags",
+      "summary": "Paper bags drifted along the curb without purpose.",
       "kind": "Entity"
     },
     {
-      "id": "704363d1-6356-482e-b69f-32f807e53ca6",
-      "name": "Tyler",
-      "summary": "Tyler is one of the only people who know Stan can talk.",
+      "id": "f922a7cb-4742-4269-84e3-ff392a5baa0e",
+      "name": "Curb",
+      "summary": "Paper bags drifted along the curb without purpose.",
       "kind": "Entity"
     },
     {
-      "id": "f7bfb122-47e7-489e-8d0f-ae93c0c77de3",
-      "name": "Chloe",
-      "summary": "Chloe is one of the only people who know Stan can talk.",
+      "id": "48ada8cb-7193-4232-ad74-ee2807be2cf2",
+      "name": "window",
+      "summary": "The open window caused the curtains to sway.",
       "kind": "Entity"
     },
     {
-      "id": "b0ccf915-a98a-4160-b1c8-573f9a7ad228",
-      "name": "Karl",
-      "summary": "Karl is one of the only people who know Stan can talk.",
+      "id": "700f7444-4a76-4ec3-8578-f9bbc78bedce",
+      "name": "curtains",
+      "summary": "The open window caused the curtains to sway.",
       "kind": "Entity"
     },
     {
-      "id": "71eafb88-d81d-454c-ad80-9908b24c793e",
-      "name": "Grandma James",
-      "summary": "Grandma James is one of the only people who know Stan can talk.\nGrandma James found Robert while cleaning the family room.",
+      "id": "4ca1af87-abf4-4ea9-bfc6-0ed99bdf59ff",
+      "name": "The floor tiles",
+      "summary": "The floor tiles are chipped and uneven underfoot.",
       "kind": "Entity"
     },
     {
-      "id": "5d14f3c5-aef7-4d73-8993-69276d973433",
-      "name": "pomeranians",
-      "summary": "Stan hates noisy pomeranians.",
+      "id": "01a97607-3f3c-43ce-9b86-a149dfdcbfae",
+      "name": "Dr. Alice Chen",
+      "summary": "Dr. Alice Chen is the lead researcher at the Stanford Oncology Lab.\nDr. Alice Chen keeps her access code 7-ECHO-4 stored in a locked drawer.",
       "kind": "Entity"
     },
     {
-      "id": "0d64ad20-0ce4-4e10-a879-a40c6787a973",
-      "name": "poodles",
-      "summary": "Stan has a deep love of poodles.",
+      "id": "15ce1ec6-17a3-4b0f-ae3a-814147773f1c",
+      "name": "Stanford Oncology Lab",
+      "summary": "Dr. Alice Chen is the lead researcher at the Stanford Oncology Lab.",
       "kind": "Entity"
     },
     {
-      "id": "94d7f82a-9a57-4442-b649-242518e11acf",
-      "name": "World of Woofcraft",
-      "summary": "Stan likes the game Realm of the Tower, shown in the episode World of Woofcraft.",
+      "id": "5d2813e0-509d-4f17-8076-649c8d15d2fd",
+      "name": "access code 7-ECHO-4",
+      "summary": "Dr. Alice Chen keeps her access code 7-ECHO-4 stored in a locked drawer.",
       "kind": "Entity"
     },
     {
-      "id": "ac715730-126e-487a-88e4-ab0d66ae7300",
-      "name": "Realm of the Tower",
-      "summary": "",
+      "id": "20e154b1-1fa2-4bb2-8638-50c4a2847a5d",
+      "name": "leaky pipe",
+      "summary": "Water dripped from the leaky pipe.",
       "kind": "Entity"
     },
     {
-      "id": "913e2c9e-c544-4c71-bee3-ca299cbef41e",
-      "name": "Robert",
-      "summary": "Stan has a beloved toy monkey named Robert who is his companion.\nGrandma James found Robert while cleaning the family room.\nSimon James Morgan plays the character Richard in Seed of Chucky.",
+      "id": "18d7b759-cefa-47cd-a6aa-a8c8e4b3883e",
+      "name": "empty basin",
+      "summary": "Water dripped into the empty basin.",
       "kind": "Entity"
     },
     {
-      "id": "01c84081-ca11-4c59-9453-5f3c8508e1b8",
-      "name": "Stan Runs Away",
-      "summary": "",
+      "id": "74a647e6-74d1-4816-9af1-c639dee78315",
+      "name": "water",
+      "summary": "Water dripped from the leaky pipe.\nWater dripped into the empty basin.",
       "kind": "Entity"
     },
     {
-      "id": "b1fb0818-40eb-4ef2-bc0b-5b6f695a16db",
-      "name": "The Kids Find Out Stan Blogs",
-      "summary": "",
+      "id": "5b319156-20af-4f18-b4de-36321ed9856e",
+      "name": "The mail",
+      "summary": "The mail arrived later than usual that day.",
       "kind": "Entity"
     },
     {
-      "id": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "name": "Gamla stan metro station",
-      "summary": "Gamla stan metro station is a station of the Stockholm metro.\nGamla stan metro station is located in the district of Gamla stan.\nGamla stan metro station is served by the Red line.\nGamla stan metro station is served by the Green line.\nGamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.\nGamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.",
+      "id": "fc4ea0a7-183d-4408-b409-bfb8634b140e",
+      "name": "Somebody",
+      "summary": "Somebody forgot to turn the porch light off.",
       "kind": "Entity"
     },
     {
-      "id": "984c272f-3b2e-4bf6-8dab-10c8b70935fe",
-      "name": "Stockholm metro",
-      "summary": "Gamla stan metro station is a station of the Stockholm metro.",
+      "id": "96508c0c-e0c7-4be1-929a-433cd09b6d12",
+      "name": "porch light",
+      "summary": "Somebody forgot to turn the porch light off.",
       "kind": "Entity"
     },
     {
-      "id": "b1ba423e-f69c-4c7e-b5ad-2a94a3b2b957",
-      "name": "Gamla stan",
-      "summary": "Gamla stan metro station is located in the district of Gamla stan.",
+      "id": "c71f2d98-a990-4a28-996c-8e1ba42ed054",
+      "name": "The clock on the wall",
+      "summary": "The clock stopped at an odd hour, as noted in the messages.",
       "kind": "Entity"
     },
     {
-      "id": "09043bc4-ff66-42ca-9faf-d267abee2f6e",
-      "name": "Red line",
-      "summary": "Gamla stan metro station is served by the Red line.\nThe first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.\nThe first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.",
+      "id": "8d0fd3af-0f72-4804-bcc7-6d9dacb59120",
+      "name": "Dust",
+      "summary": "Dust settled slowly onto the unused shelves.",
       "kind": "Entity"
     },
     {
-      "id": "6b4c3483-5b99-4e9d-8974-418eec4c1519",
-      "name": "Green line",
-      "summary": "Gamla stan metro station is served by the Green line.",
+      "id": "e0311bea-dd80-493a-8417-3bac519c6381",
+      "name": "unused shelves",
+      "summary": "Dust settled slowly onto the unused shelves.",
       "kind": "Entity"
     },
     {
-      "id": "a0269c88-9c22-450f-b0eb-e603fd5ac705",
-      "name": "Slussen",
-      "summary": "Gamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.",
+      "id": "873e2f41-9bea-47d3-abe5-6deae2a444d7",
+      "name": "The lobby",
+      "summary": "The lobby had a faint humming sound.",
       "kind": "Entity"
     },
     {
-      "id": "414c99b2-8d83-4fd4-bffe-a0cfce4c1bbf",
-      "name": "H\u00f6torget",
-      "summary": "Gamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.",
+      "id": "42b62908-78b5-474e-af6a-f2ec61f168fc",
+      "name": "A faint humming sound",
+      "summary": "The lobby had a faint humming sound.",
       "kind": "Entity"
     },
     {
-      "id": "6a4fbad3-e9da-417e-a808-ade0e568bb53",
-      "name": "T-Centralen",
-      "summary": "The first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.",
+      "id": "9d8bf5b8-8f5f-4148-82c7-5d7c6a856600",
+      "name": "forgotten cup",
+      "summary": "The forgotten cup is located on the edge of the countertop.",
       "kind": "Entity"
     },
     {
-      "id": "57edcf6d-5e2d-49be-bcc8-f429fc8a8708",
-      "name": "Fru\u00e4ngen",
-      "summary": "The first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "name": "John Bell",
-      "summary": "John Bell played Bain in two installments of The Hobbit film series.\nJohn Bell acted in The Hobbit film series.\nJohn Bell played Angus in Battleship.\nJohn Bell acted in Battleship.\nJohn Bell played Helius in Wrath of the Titans.\nJohn Bell acted in Wrath of the Titans.\nJohn Bell played Toby Coleman in Tracy Beaker Returns.\nJohn Bell acted in Tracy Beaker Returns.",
-      "kind": "Entity"
-    },
-    {
-      "id": "84aa912b-f320-41ab-a037-07a0d1fdc690",
-      "name": "Bain",
-      "summary": "John Bell played Bain in two installments of The Hobbit film series.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5a670a6d-2184-4ad4-ad17-6f13d683f721",
-      "name": "Angus",
-      "summary": "John Bell played Angus in Battleship.",
-      "kind": "Entity"
-    },
-    {
-      "id": "ad6fe3a5-65a6-4be1-887f-de375effebc2",
-      "name": "Battleship",
-      "summary": "John Bell acted in Battleship.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2ea276ec-ae9f-4001-9c50-7922ec664630",
-      "name": "Helius",
-      "summary": "John Bell played Helius in Wrath of the Titans.",
-      "kind": "Entity"
-    },
-    {
-      "id": "838b3adf-1905-4141-a35f-1c86c1f91bee",
-      "name": "Wrath of the Titans",
-      "summary": "John Bell acted in Wrath of the Titans.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2e0313b5-ba3f-47e3-80a0-51be9e147fec",
-      "name": "Toby Coleman",
-      "summary": "John Bell played Toby Coleman in Tracy Beaker Returns.",
-      "kind": "Entity"
-    },
-    {
-      "id": "900099e7-e570-40ef-8722-9732264bd30e",
-      "name": "Tracy Beaker Returns",
-      "summary": "John Bell acted in Tracy Beaker Returns.",
-      "kind": "Entity"
-    },
-    {
-      "id": "6a08ec8c-bfca-4dc2-9724-432c478e9e4d",
-      "name": "Arnaud Joyet",
-      "summary": "Arnaud Joyet plays the character Stan.\nArnaud Joyet acts in the series Hero Corp.",
-      "kind": "Entity"
-    },
-    {
-      "id": "b9f14b18-395a-4f11-bbc3-414e75e53e50",
-      "name": "Hero Corp",
-      "summary": "Arnaud Joyet acts in the series Hero Corp.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3232e3e4-a0f1-4628-86c9-b2a785ada46c",
-      "name": "Crixus",
-      "summary": "Jonathan Manu Bennett portrays the character Crixus in the TV series Spartacus.",
-      "kind": "Entity"
-    },
-    {
-      "id": "62d20ee2-fe88-449c-ac50-95cf86da8391",
-      "name": "Spartacus (TV series)",
-      "summary": "Manu Bennett portrayed Crixus in Spartacus.",
-      "kind": "Entity"
-    },
-    {
-      "id": "05d66ddb-bd71-469e-a6b4-1047247ac759",
-      "name": "Allanon",
-      "summary": "Jonathan Manu Bennett portrays the character Allanon in The Shannara Chronicles.",
-      "kind": "Entity"
-    },
-    {
-      "id": "fbf362b4-de9d-4ab3-8475-53d47a7533d6",
-      "name": "The Shannara Chronicles",
-      "summary": "Manu Bennett played Allanon in The Shannara Chronicles.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f761b27f-93dd-4a5b-84bc-63b1017ea330",
-      "name": "Slade Wilson / Deathstroke",
-      "summary": "Jonathan Manu Bennett portrays Slade Wilson / Deathstroke in the TV series Arrow.",
-      "kind": "Entity"
-    },
-    {
-      "id": "0dca9d2c-74cf-4ba0-93b3-713d5985178c",
-      "name": "Arrow",
-      "summary": "Manu Bennett portrayed Slade Wilson / Deathstroke in Arrow.",
-      "kind": "Entity"
-    },
-    {
-      "id": "daed9240-e0ae-43b7-b4e3-9d2e1245fb49",
-      "name": "Azog the Defiler",
-      "summary": "Jonathan Manu Bennett portrays Azog the Defiler in The Hobbit film trilogy.",
-      "kind": "Entity"
-    },
-    {
-      "id": "b4dc0fde-95a7-4b49-b235-dc5d607cbc0b",
-      "name": "Buzz Lightyear",
-      "summary": "Tim Allen provided the voice for Buzz Lightyear in the Toy Story films and the Buzz Lightyear movie.\nPatrick Warburton was the voice of Buzz Lightyear for the TV series.\nPat Fraley voiced Buzz Lightyear for video games and Disney Parks attractions.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2b133a0f-b971-4286-88e1-bdd50b558387",
-      "name": "Tim Allen",
-      "summary": "Tim Allen provided the voice for Buzz Lightyear in the Toy Story films and the Buzz Lightyear movie.",
-      "kind": "Entity"
-    },
-    {
-      "id": "760da7ef-29bf-47fb-b573-1531ef5fec74",
-      "name": "Patrick Warburton",
-      "summary": "Patrick Warburton was the voice of Buzz Lightyear for the TV series.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c2739532-6a7b-4035-a194-df3f1cc4db99",
-      "name": "Pat Fraley",
-      "summary": "Pat Fraley voiced Buzz Lightyear for video games and Disney Parks attractions.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9b839ec0-d468-4f5b-98f9-93626c6e2d70",
-      "name": "List of South Park cast members",
-      "summary": "Trey Parker voices main characters Stan Marsh, Eric Cartman, Randy Marsh, and Mr. Garrison, along with various recurring characters like Clyde Donovan and Mr. Mackey.",
-      "kind": "Entity"
-    },
-    {
-      "id": "b4b19d43-652f-4825-971b-63ff03135984",
-      "name": "Trey Parker",
-      "summary": "Trey Parker provides the voice for the character Stan Marsh.\nTrey Parker provides the voice for the character Eric Cartman.\nTrey Parker provides the voice for the character Randy Marsh.\nTrey Parker provides the voice for the character Mr. Garrison.\nTrey Parker provides the voice for the recurring character Clyde Donovan.\nTrey Parker provides the voice for the recurring character Mr. Hankey.\nTrey Parker provides the voice for the recurring character Mr. Mackey.\nTrey Parker provides the voice for the recurring character Stephen Stotch.\nTrey Parker provides the voice for the recurring character Jimmy Valmer.\nTrey Parker provides the voice for the recurring character Timmy Burch.\nTrey Parker provides the voice for the recurring character Tuong Lu Kim.\nTrey Parker provides the voice for the recurring character Phillip.\nDian Bachar has acted in various films by or starring Trey Parker.\nDian Bachar has acted in various films by or starring Matt Stone.\nDian Bachar has acted in various films by or starring Trey Parker.\nDian Bachar has acted in various films by or starring Matt Stone.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3180dac2-58db-4c17-acc9-2ad27ff69c27",
-      "name": "Eric Cartman",
-      "summary": "Trey Parker provides the voice for the character Eric Cartman.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a431c99b-237e-4d37-9ddc-c2b133bd2b09",
-      "name": "Randy Marsh",
-      "summary": "Trey Parker provides the voice for the character Randy Marsh.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3fe45643-aec4-4233-bfb7-a4065234ef68",
-      "name": "Mr. Garrison",
-      "summary": "Trey Parker provides the voice for the character Mr. Garrison.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5f7d8163-5a05-4621-a00f-153e9c148f5e",
-      "name": "Clyde Donovan",
-      "summary": "Trey Parker provides the voice for the recurring character Clyde Donovan.",
-      "kind": "Entity"
-    },
-    {
-      "id": "6e817738-27e6-432c-9ae0-170f2f801550",
-      "name": "Mr. Hankey",
-      "summary": "Trey Parker provides the voice for the recurring character Mr. Hankey.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f47d49b6-7c7c-471d-9702-a6462dabe45b",
-      "name": "Mr. Mackey",
-      "summary": "Trey Parker provides the voice for the recurring character Mr. Mackey.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5b758ae5-cc9a-4448-a6b4-cb70c6e9d8f8",
-      "name": "Stephen Stotch",
-      "summary": "Trey Parker provides the voice for the recurring character Stephen Stotch.",
-      "kind": "Entity"
-    },
-    {
-      "id": "023d641f-df17-4dc7-b8c6-33703e75c58a",
-      "name": "Jimmy Valmer",
-      "summary": "Trey Parker provides the voice for the recurring character Jimmy Valmer.",
-      "kind": "Entity"
-    },
-    {
-      "id": "6171437d-4a08-4244-aefc-83e8b351e432",
-      "name": "Timmy Burch",
-      "summary": "Trey Parker provides the voice for the recurring character Timmy Burch.",
-      "kind": "Entity"
-    },
-    {
-      "id": "ac7c72c0-59ad-4723-b8bf-45c4ac08ae74",
-      "name": "Tuong Lu Kim",
-      "summary": "Trey Parker provides the voice for the recurring character Tuong Lu Kim.",
-      "kind": "Entity"
-    },
-    {
-      "id": "ff6490db-8656-4064-a313-0d972fd4616a",
-      "name": "Phillip",
-      "summary": "Trey Parker provides the voice for the recurring character Phillip.",
-      "kind": "Entity"
-    },
-    {
-      "id": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "name": "Gemini Division",
-      "summary": "Gemini Division is a science fiction series created by Electric Farm Entertainment.\nGemini Division is based on an original story by Brent Friedman.\nThe online series Gemini Division was developed by Joshua Stern.\nGemini Division currently airs on NBC.com as part of their online content lineup.\nThe series Gemini Division stars Rosario Dawson.\nJ Alex Reed is a showrunner for Gemini Division.\nDuane Loose is a showrunner for Gemini Division.\nBrent Friedman serves as an executive producer of Gemini Division.\nStan Rowgow serves as an executive producer of Gemini Division.\nBrent Friedman is part of the writing staff of Gemini Division.\nAndy Black is part of the writing staff of Gemini Division.\nLawrence Frank is part of the writing staff of Gemini Division.\nJacqui Zambrano is part of the writing staff of Gemini Division.\nStan Rogow is credited as a director on Gemini Division and is presumed to direct multiple episodes.\nNeal Israel directs some episodes of Gemini Division.\nBen Raab manages web content development for Gemini Division as a web content producer.\nDeric Hugues manages web content development for Gemini Division as a web content producer.",
-      "kind": "Entity"
-    },
-    {
-      "id": "956a28e5-2d04-4cd7-88cd-f9e0c017bb4e",
-      "name": "Electric Farm Entertainment",
-      "summary": "Gemini Division is a science fiction series created by Electric Farm Entertainment.",
-      "kind": "Entity"
-    },
-    {
-      "id": "dbdb6188-f238-4e6f-ab14-8228dbf55ee0",
-      "name": "Brent Friedman",
-      "summary": "Gemini Division is based on an original story by Brent Friedman.\nBrent Friedman serves as an executive producer of Gemini Division.\nBrent Friedman is part of the writing staff of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "83b46e22-6e3f-4b02-9064-e4a7e46e5fdf",
-      "name": "Joshua Stern",
-      "summary": "The online series Gemini Division was developed by Joshua Stern.",
-      "kind": "Entity"
-    },
-    {
-      "id": "38e28bcf-6ae5-4080-8213-79b2dc1e423b",
-      "name": "NBC.com",
-      "summary": "Gemini Division currently airs on NBC.com as part of their online content lineup.",
-      "kind": "Entity"
-    },
-    {
-      "id": "dd2c1b17-be48-4e76-9227-e3aa8f95b92a",
-      "name": "Rosario Dawson",
-      "summary": "The series Gemini Division stars Rosario Dawson.",
-      "kind": "Entity"
-    },
-    {
-      "id": "8d4a4ccb-d49f-47c2-b073-9306db425ce3",
-      "name": "J Alex Reed",
-      "summary": "J Alex Reed is a showrunner for Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "0a2e6284-0159-4e9b-94f3-b206fc66b0b2",
-      "name": "Duane Loose",
-      "summary": "Duane Loose is a showrunner for Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "7b1df6c5-8cdf-4ca1-8fca-a030bc7dbf5b",
-      "name": "Stan Rowgow",
-      "summary": "Stan Rowgow serves as an executive producer of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "98adf9f6-bd53-41ff-aff7-97fc03d52340",
-      "name": "Andy Black",
-      "summary": "Andy Black is part of the writing staff of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "184e8557-4e4c-4d15-aed2-2db3d13935f9",
-      "name": "Lawrence Frank",
-      "summary": "Lawrence Frank is part of the writing staff of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "472505e2-2691-42eb-b152-0b8c0c03a622",
-      "name": "Jacqui Zambrano",
-      "summary": "Jacqui Zambrano is part of the writing staff of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a69a7b4e-aaef-4163-b2a1-55c232135504",
-      "name": "Stan Rogow",
-      "summary": "Stan Rogow is credited as a director on Gemini Division and is presumed to direct multiple episodes.",
-      "kind": "Entity"
-    },
-    {
-      "id": "01615b19-0ec8-4790-938a-a9cdf03f6866",
-      "name": "Neal Israel",
-      "summary": "Neal Israel directs some episodes of Gemini Division.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2e79b87d-6a92-4cae-866c-80bc7b0104ca",
-      "name": "Ben Raab",
-      "summary": "Ben Raab manages web content development for Gemini Division as a web content producer.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c5767184-5995-4f74-811c-7ad80a483d85",
-      "name": "Deric Hugues",
-      "summary": "Deric Hugues manages web content development for Gemini Division as a web content producer.",
-      "kind": "Entity"
-    },
-    {
-      "id": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "name": "Dian Bachar",
-      "summary": "Dian Bachar has acted in various films by or starring Trey Parker.\nDian Bachar has acted in various films by or starring Matt Stone.\nDian Bachar played the role of George Noon in Cannibal! The Musical.\nDian Bachar played the role of Ben Chapleski in Orgazmo.\nDian Bachar played Kenny \"Squeak\" Scolari in the film BASEketball in 1998.\nDian Bachar has made occasional appearances on South Park.\nDian Bachar appeared as an alien engineer in Galaxy Quest, though most of his scenes were cut.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2a354ca0-5416-4411-b251-97a160347d52",
-      "name": "Cannibal! The Musical",
-      "summary": "Dian Bachar played the role of George Noon in Cannibal! The Musical.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3a355d6e-2076-4f13-aa99-e91ba45f371d",
-      "name": "George Noon",
-      "summary": "George Noon is a character played by Dian Bachar in the film \"Cannibal! The Musical\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "157cd951-29af-43e0-9854-2a5e0b3a1029",
-      "name": "Orgazmo",
-      "summary": "Dian Bachar played the role of Ben Chapleski in Orgazmo.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a4245c6b-4708-43fe-9ed7-ac9d295e1096",
-      "name": "Ben Chapleski",
-      "summary": "Ben Chapleski is a character portrayed by Dian Bachar in the film \"Orgazmo\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "2ce3742e-aa63-4725-a9e4-c930041025de",
-      "name": "Kenny \"Squeak\" Scolari",
-      "summary": "Kenny \"Squeak\" Scolari is a character played by Dian Bachar in the film \"BASEketball\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "19e02e91-329f-4074-907c-de416ec8dada",
-      "name": "BASEketball",
-      "summary": "Dian Bachar played Kenny \"Squeak\" Scolari in the film BASEketball in 1998.",
-      "kind": "Entity"
-    },
-    {
-      "id": "260a8ca9-482f-4a1e-9ea2-3cbaa49a7b68",
-      "name": "Galaxy Quest",
-      "summary": "Dian Bachar appeared as an alien engineer in Galaxy Quest, though most of his scenes were cut.",
-      "kind": "Entity"
-    },
-    {
-      "id": "df1b0ab1-783a-4f3e-9279-1206777d7103",
-      "name": "Dog Star Man",
-      "summary": "Stan Brakhage directed the series of experimental films called Dog Star Man.\nJane Wodening appeared in the Dog Star Man experimental film series.",
-      "kind": "Entity"
-    },
-    {
-      "id": "681f1777-d47a-4216-a317-22180104b2e6",
-      "name": "Stan Brakhage",
-      "summary": "Stan Brakhage directed the series of experimental films called Dog Star Man.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2b568cf1-bfa6-410a-8237-297093c5275f",
-      "name": "Jane Wodening",
-      "summary": "Jane Wodening appeared in the Dog Star Man experimental film series.",
-      "kind": "Entity"
-    },
-    {
-      "id": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "name": "Steve Smith (American Dad!)",
-      "summary": "Steven Anita \"Steve\" Smith is a character in the animated television series American Dad!\nScott Grimes is the voice actor for Steven Anita \"Steve\" Smith in American Dad!\nSteven Anita \"Steve\" Smith is the son of Stan Smith\nSteven Anita \"Steve\" Smith is the son of Francine Smith\nSteven Anita \"Steve\" Smith is the younger brother of Hayley Smith\nBarry Robinson is Steve's morbidly obese friend.\nIn one episode, deranged Barry Robinson frames Steve for destroying Stan's commemorative plates.",
-      "kind": "Entity"
-    },
-    {
-      "id": "7ad1d512-5e8f-4520-91cc-ebce5aa6c7bc",
-      "name": "Steven Anita \"Steve\" Smith",
-      "summary": "Steve Smith is the youngest son of Stan and Francine Smith in American Dad! and brother to Hayley, voiced by Scott Grimes.",
-      "kind": "Entity"
-    },
-    {
-      "id": "42c22d16-bfe0-40d4-92c4-f8cee5806f3e",
-      "name": "American Dad!",
-      "summary": "Steven Anita \"Steve\" Smith is a character in the animated television series American Dad!",
-      "kind": "Entity"
-    },
-    {
-      "id": "2eea2849-443e-4a15-9810-bfa993673cef",
-      "name": "Scott Grimes",
-      "summary": "Scott Grimes is the voice actor for Steven Anita \"Steve\" Smith in American Dad!",
-      "kind": "Entity"
-    },
-    {
-      "id": "ad9d5645-ec73-4929-9ea9-9cfadf20e880",
-      "name": "Francine Smith",
-      "summary": "Steven Anita \"Steve\" Smith is the son of Francine Smith\nStan blames Francine for not getting into heaven, leading to Francine ending their relationship.\nFrancine befriends Jesus and becomes his bride.",
-      "kind": "Entity"
-    },
-    {
-      "id": "7ab278a5-a759-4e92-be06-bc4a1fd20211",
-      "name": "Hayley Smith",
-      "summary": "Steven Anita \"Steve\" Smith is the younger brother of Hayley Smith",
-      "kind": "Entity"
-    },
-    {
-      "id": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "name": "Richard Crispin Armitage",
-      "summary": "Richard Crispin Armitage played the character John Thornton in the British television programme North & South (2004).\nRichard Crispin Armitage portrayed the dwarf prince and leader Thorin Oakenshield in Peter Jackson's film trilogy adaptation of The Hobbit.\nRichard Crispin Armitage acted as John Proctor in Ya\u00ebl Farber's stage production of Arthur Miller's The Crucible.\nRichard Crispin Armitage portrayed Francis Dolarhyde in the American TV series Hannibal.\nRichard Crispin Armitage acted as Lucas North in the British TV drama Spooks.\nRichard Crispin Armitage played John Porter in the British TV drama Strike Back.\nRichard Crispin Armitage portrayed Guy of Gisborne in the British TV drama Robin Hood.\nRichard Crispin Armitage voiced the character Trevor Belmont in the Netflix adaptation of Castlevania.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9e889c3f-928f-43d0-87f1-0606c6cf06f5",
-      "name": "John Thornton",
-      "summary": "Richard Crispin Armitage played the character John Thornton in the British television programme North & South (2004).",
-      "kind": "Entity"
-    },
-    {
-      "id": "60591f1c-a7b8-44fe-9d68-d99635eb9aa0",
-      "name": "North & South",
-      "summary": "Richard Armitage played John Thornton in the UK TV series \"North & South\" (2004).",
-      "kind": "Entity"
-    },
-    {
-      "id": "34fb8226-26c6-414d-8d49-bff490b50051",
-      "name": "Thorin Oakenshield",
-      "summary": "Richard Crispin Armitage portrayed the dwarf prince and leader Thorin Oakenshield in Peter Jackson's film trilogy adaptation of The Hobbit.",
-      "kind": "Entity"
-    },
-    {
-      "id": "8084f17d-e052-409f-b740-d241c15fdae2",
-      "name": "Peter Jackson's film trilogy adaptation of The Hobbit",
-      "summary": "Richard Armitage played Thorin Oakenshield in the film trilogy.",
-      "kind": "Entity"
-    },
-    {
-      "id": "6fb65ebe-ec14-4eb6-88d8-4129242aac9b",
-      "name": "John Proctor",
-      "summary": "Richard Crispin Armitage acted as John Proctor in Ya\u00ebl Farber's stage production of Arthur Miller's The Crucible.",
-      "kind": "Entity"
-    },
-    {
-      "id": "771a0243-7b8d-4051-ac25-576bf5c3ab22",
-      "name": "Ya\u00ebl Farber's stage production of Arthur Miller's The Crucible",
-      "summary": "Richard Armitage portrayed John Proctor in the stage production.",
-      "kind": "Entity"
-    },
-    {
-      "id": "dce6205f-a972-46fe-8861-ee3e349841e9",
-      "name": "Francis Dolarhyde",
-      "summary": "Richard Crispin Armitage portrayed Francis Dolarhyde in the American TV series Hannibal.",
-      "kind": "Entity"
-    },
-    {
-      "id": "96f31fa7-7292-4514-88ee-b595980a06a8",
-      "name": "Hannibal",
-      "summary": "Richard Armitage played Francis Dolarhyde in the TV series \"Hannibal\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "e5f1a8d0-8a23-4d29-afba-43a288b2b44f",
-      "name": "Lucas North",
-      "summary": "Richard Crispin Armitage acted as Lucas North in the British TV drama Spooks.",
-      "kind": "Entity"
-    },
-    {
-      "id": "485fad5c-80d1-4f88-bf67-63dd048fff50",
-      "name": "Spooks",
-      "summary": "Richard Armitage portrayed Lucas North in the British TV drama \"Spooks\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "d3de9aee-d175-4b02-b69e-559f5ae5f7f6",
-      "name": "John Porter",
-      "summary": "Richard Crispin Armitage played John Porter in the British TV drama Strike Back.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a4a9a0da-3237-425c-a55e-f3b68d5251c5",
-      "name": "Strike Back",
-      "summary": "Richard Armitage played John Porter in \"Strike Back\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "19fd9cf2-4a86-4bf4-b432-0524eababc39",
-      "name": "Guy of Gisborne",
-      "summary": "Richard Crispin Armitage portrayed Guy of Gisborne in the British TV drama Robin Hood.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c5f8dd3c-a853-43dd-9f5b-f6d7d2fdb567",
-      "name": "Robin Hood",
-      "summary": "Richard Armitage played Guy of Gisborne in the TV series \"Robin Hood\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "6819c206-aa34-4d08-9eb7-1c04292b4bd4",
-      "name": "Trevor Belmont",
-      "summary": "Richard Crispin Armitage voiced the character Trevor Belmont in the Netflix adaptation of Castlevania.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9692584b-5a91-493f-b1ed-6279b582f5a9",
-      "name": "Netflix adaptation of Castlevania",
-      "summary": "Richard Armitage voiced Trevor Belmont in the Netflix series \"Castlevania\".",
-      "kind": "Entity"
-    },
-    {
-      "id": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "name": "Not What He Seems",
-      "summary": "Not What He Seems is the eleventh episode of the second season of Gravity Falls.\nAlex Hirsch created Not What He Seems.\nNot What He Seems was written by Shion Takeuchi.\nNot What He Seems was written by Josh Weinstein.\nNot What He Seems was written by Jeff Rowe.\nNot What He Seems was written by Matt Chapman.\nStephen Sandoval directed Not What He Seems.",
-      "kind": "Entity"
-    },
-    {
-      "id": "bf8b8030-670e-430d-b04f-ba97b1c6ba14",
-      "name": "Gravity Falls",
-      "summary": "Not What He Seems is the eleventh episode of the second season of Gravity Falls.",
-      "kind": "Entity"
-    },
-    {
-      "id": "174ff706-367d-4088-860e-ceef5c78ea39",
-      "name": "Alex Hirsch",
-      "summary": "Alex Hirsch created Not What He Seems.\nGrunkle Stan is voiced by Alex Hirsch.",
-      "kind": "Entity"
-    },
-    {
-      "id": "40cfaad5-b35c-432f-b884-9c2a14a099a2",
-      "name": "Shion Takeuchi",
-      "summary": "Not What He Seems was written by Shion Takeuchi.",
-      "kind": "Entity"
-    },
-    {
-      "id": "26731982-835a-449f-95ba-7e10d2f0b4f6",
-      "name": "Josh Weinstein",
-      "summary": "Not What He Seems was written by Josh Weinstein.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a028ec97-6347-440c-9222-ca82c93ea605",
-      "name": "Jeff Rowe",
-      "summary": "Not What He Seems was written by Jeff Rowe.",
-      "kind": "Entity"
-    },
-    {
-      "id": "af65a076-0ba4-4e26-8c6f-5dc00b0fd25a",
-      "name": "Matt Chapman",
-      "summary": "Not What He Seems was written by Matt Chapman.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3426528e-dab3-432e-929e-513659c40c72",
-      "name": "Stephen Sandoval",
-      "summary": "Stephen Sandoval directed Not What He Seems.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5a984b74-0394-40e4-85e6-7675d295384b",
-      "name": "Dipper Pines",
-      "summary": "Dipper Pines is voiced by Jason Ritter.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c8442f1f-fa6c-44f7-87e6-ecb1c7b92bf8",
-      "name": "Jason Ritter",
-      "summary": "Dipper Pines is voiced by Jason Ritter.",
-      "kind": "Entity"
-    },
-    {
-      "id": "1d13b948-6301-4902-a80f-8bb7c11c0e36",
-      "name": "Mabel Pines",
-      "summary": "Mabel Pines is voiced by Kristen Schaal.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a5badbd3-d368-4306-96f1-901f6308319e",
-      "name": "Kristen Schaal",
-      "summary": "Mabel Pines is voiced by Kristen Schaal.",
-      "kind": "Entity"
-    },
-    {
-      "id": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "name": "Mikael Persbrandt",
-      "summary": "Mikael Persbrandt is best known in Swedish films for playing the character Gunvald Larsson in the Beck series of movies.\nMikael Persbrandt acts in the Beck series of movies where he plays Gunvald Larsson.\nMikael Persbrandt is internationally known for his starring role in the Academy Award winning film In a Better World.\nMikael Persbrandt earned a nomination for Best Actor at the 2011 European Film Awards for his role in In a Better World.\nMikael Persbrandt played the character Carl Hamilton from the novels by Jan Guillou.\nMikael Persbrandt played the role of Beorn in The Hobbit.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5559368c-e678-4859-9e9c-f85420ce10a9",
-      "name": "Gunvald Larsson",
-      "summary": "Mikael Persbrandt is best known in Swedish films for playing the character Gunvald Larsson in the Beck series of movies.",
-      "kind": "Entity"
-    },
-    {
-      "id": "ae90ec6c-1560-4a29-ab26-93c7d0924ccb",
-      "name": "Beck series of movies",
-      "summary": "Mikael Persbrandt acts in the Beck series of movies where he plays Gunvald Larsson.",
-      "kind": "Entity"
-    },
-    {
-      "id": "5e3f198a-a6cc-460a-8280-6c39fb204b06",
-      "name": "In a Better World",
-      "summary": "Mikael Persbrandt is internationally known for his starring role in the Academy Award winning film In a Better World.\nThe film In a Better World was directed by Susanne Bier.",
-      "kind": "Entity"
-    },
-    {
-      "id": "b6670735-0e1b-4e75-897d-956191626def",
-      "name": "Susanne Bier",
-      "summary": "The film In a Better World was directed by Susanne Bier.",
-      "kind": "Entity"
-    },
-    {
-      "id": "54679505-1e35-4f83-b6ad-44e102adb525",
-      "name": "European Film Award",
-      "summary": "Mikael Persbrandt earned a nomination for Best Actor at the 2011 European Film Awards for his role in In a Better World.",
-      "kind": "Entity"
-    },
-    {
-      "id": "07371fed-8687-4c10-b802-980888b35896",
-      "name": "Carl Hamilton",
-      "summary": "Mikael Persbrandt played the character Carl Hamilton from the novels by Jan Guillou.\nThe character Carl Hamilton was created by the novelist Jan Guillou.",
-      "kind": "Entity"
-    },
-    {
-      "id": "7238cf35-4826-49f0-a3f4-df77abd59922",
-      "name": "Jan Guillou",
-      "summary": "The character Carl Hamilton was created by the novelist Jan Guillou.",
-      "kind": "Entity"
-    },
-    {
-      "id": "321036a0-c3fe-4c56-8c06-bbf12352edd9",
-      "name": "Seed of Chucky",
-      "summary": "Seed of Chucky features voice actors Brad Dourif as Chucky and Jennifer Tilly as Tiffany. It also includes Billy Boyd as Glen/Glenda, with other cast members like Kristina Hewitt and John Waters.",
-      "kind": "Entity"
-    },
-    {
-      "id": "8ddc56ff-817c-4928-9150-ffdc1c79c34e",
-      "name": "Brad Dourif",
-      "summary": "Brad Dourif is the voice actor of Chucky in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "94cd5115-2fef-4fa1-ac95-11a031c1995a",
-      "name": "Chucky",
-      "summary": "Brad Dourif is the voice actor of Chucky in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "0dd2965f-48e7-4454-b439-e05dee870ef1",
-      "name": "Jennifer Tilly",
-      "summary": "Jennifer Tilly voices herself and the character Tiffany in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f715d887-4862-407f-b28b-7ad5c4212bbd",
-      "name": "Tiffany",
-      "summary": "Jennifer Tilly voices herself and the character Tiffany in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "e42d618f-a84a-4d2c-8fe7-59cfd322217c",
-      "name": "Billy Boyd",
-      "summary": "Billy Boyd is the voice actor of Glen in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "34c58fe9-3b66-478c-9ed1-7f543ac6dd74",
-      "name": "Glen",
-      "summary": "Billy Boyd is the voice actor of Glen in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "4b9a7672-9e71-4dd3-8cb4-65f4111412a5",
-      "name": "Beans El - Balawi",
-      "summary": "Beans El - Balawi plays the role of Human Glen in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "534a76c9-0947-42f1-86d4-587f1bf645f9",
-      "name": "Human Glen",
-      "summary": "Beans El - Balawi plays the role of Human Glen in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f75bcf12-37cb-42ca-bcf5-98b54c482e56",
-      "name": "Kristina Hewitt",
-      "summary": "Kristina Hewitt portrays Human Glenda in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "dff8f9f2-ad5b-4221-91f4-5e7ddcb321bb",
-      "name": "Human Glenda",
-      "summary": "Kristina Hewitt portrays Human Glenda in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "44987801-2657-4994-910a-98b4899238e2",
-      "name": "Redman",
-      "summary": "Redman is voiced by Hannah Spearritt in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "0bffcd54-6f2a-49d9-a6e1-80af01209a94",
-      "name": "Hannah Spearritt",
-      "summary": "Redman is voiced by Hannah Spearritt in Seed of Chucky.\nHannah Spearritt plays the character Joan in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9940d413-702f-4ff8-981d-5239e9f8669d",
-      "name": "Joan",
-      "summary": "Hannah Spearritt plays the character Joan in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "113e40e6-382b-4619-a10e-806f2440714f",
-      "name": "John Waters",
-      "summary": "John Waters portrays Pete Peters in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "bb34a8b7-39ac-46e8-a29b-882f38431cde",
-      "name": "Pete Peters",
-      "summary": "John Waters portrays Pete Peters in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "6cdf39af-e5ec-47e7-98da-8495f02cb2ce",
-      "name": "Jason Flemyng",
-      "summary": "Jason Flemyng plays both himself and Santa in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "efa54adc-ae05-4af1-9516-37630caaa6c1",
-      "name": "Santa",
-      "summary": "Jason Flemyng plays both himself and Santa in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "71d739cf-e9b6-4d21-a451-d4b80ebe712f",
-      "name": "Steve Lawton",
-      "summary": "Steve Lawton acts as the character Stan in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9f2d5c84-50c1-47bc-ac86-63dc8a8f1e7e",
-      "name": "Tony Gardner",
-      "summary": "Tony Gardner appears as himself in Seed of Chucky.\nTony Gardner appears as himself in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "02666c45-655f-4f9a-8194-30709b070463",
-      "name": "Rebecca Santos",
-      "summary": "Rebecca Santos plays the role of Fulvia in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c29675a9-9b6c-41d9-a1d5-55ab022f7b25",
-      "name": "Fulvia",
-      "summary": "Rebecca Santos plays the role of Fulvia in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3e666b32-a2cd-422d-bd71-0de00ea10621",
-      "name": "Keith - Lee Castle",
-      "summary": "Keith - Lee Castle acts as Bill \"Psychs\" Sykes in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f8b846db-f475-4367-a3d6-0f8a82911027",
-      "name": "Bill \"Psychs\" Sykes",
-      "summary": "Keith - Lee Castle acts as Bill \"Psychs\" Sykes in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "30a23a4f-d0f8-4ca8-8013-b7c0454b5345",
-      "name": "Paul Grossman",
-      "summary": "Paul Grossman portrays Little Boy in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "7674b858-d7b0-41fc-944b-3ccec6c9b6a0",
-      "name": "Little Boy",
-      "summary": "Paul Grossman portrays Little Boy in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "86ec9b68-ec3c-453a-b270-88b5b6ee4c2a",
-      "name": "Simon James Morgan",
-      "summary": "Simon James Morgan plays the character Richard in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "26570515-5fe4-4470-becb-46e0c84bcdda",
-      "name": "Stephanie Chambers",
-      "summary": "Stephanie Chambers acts as Claudia's mom in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "92b406cd-880a-4338-8dff-d4aa1bcaae83",
-      "name": "Claudia's mom",
-      "summary": "Stephanie Chambers acts as Claudia's mom in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3c4827e3-1832-471f-b508-fcc72e52815a",
-      "name": "Betty Simons - Denville",
-      "summary": "Betty Simons - Denville plays Claudia in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "b1172e03-5771-49a5-93de-be6c6696bbbd",
-      "name": "Claudia",
-      "summary": "Betty Simons - Denville plays Claudia in Seed of Chucky.",
-      "kind": "Entity"
-    },
-    {
-      "id": "04210db2-796c-484c-af1d-cb0102e0b289",
-      "name": "Rapture's Delight",
-      "summary": "\"Rapture's Delight\" is a ",
-      "kind": "Entity"
-    },
-    {
-      "id": "78f4420e-d5fe-48d7-ade5-1e3f2379181f",
-      "name": "Jesus",
-      "summary": "Francine befriends Jesus and becomes his bride.",
-      "kind": "Entity"
-    },
-    {
-      "id": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "name": "Spider-Man (1967 TV series)",
-      "summary": "Spider-Man (1967 TV series) is the original animated TV series based on the Spider-Man comic book series.\nThe Spider-Man comic book series was created by writer Stan Lee, on which the Spider-Man (1967 TV series) is based.\nThe Spider-Man comic book series was designed by artist Steve Ditko, serving as the basis for Spider-Man (1967 TV series).\nGrantray-Lawrence Animation produced the first season of Spider-Man (1967 TV series).\nKrantz Films produced the second and third seasons of Spider-Man (1967 TV series).\nPaul Soles starred as the voice of Peter Parker in the Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "3e34fa73-73ae-4e86-ada1-302d6f63e0c0",
-      "name": "Spider-Man comic book series",
-      "summary": "Spider-Man (1967 TV series) is the original animated TV series based on the Spider-Man comic book series.",
-      "kind": "Entity"
-    },
-    {
-      "id": "3be2b3d1-b2df-4639-a879-ce220080881a",
-      "name": "Stan Lee",
-      "summary": "The Spider-Man comic book series was created by writer Stan Lee, on which the Spider-Man (1967 TV series) is based.",
-      "kind": "Entity"
-    },
-    {
-      "id": "665f186c-0c9c-4bcf-8100-1460f25b0659",
-      "name": "Steve Ditko",
-      "summary": "The Spider-Man comic book series was designed by artist Steve Ditko, serving as the basis for Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "35d9fac2-5b04-4751-9241-24dc4a1ac4fc",
-      "name": "Grantray-Lawrence Animation",
-      "summary": "Grantray-Lawrence Animation produced the first season of Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "094ff5a4-cdf8-4a79-b666-732a750e4e24",
-      "name": "Krantz Films",
-      "summary": "Krantz Films produced the second and third seasons of Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "f409c182-05af-4f37-a0b9-409560fe26b2",
-      "name": "Paul Soles",
-      "summary": "Paul Soles starred as the voice of Peter Parker in the Spider-Man (1967 TV series).\nPaul Soles provided the voice for the character Peter Parker in the Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "5c694041-410e-4dc6-a17c-0836846573c7",
-      "name": "Peter Parker",
-      "summary": "Paul Soles provided the voice for the character Peter Parker in the Spider-Man (1967 TV series).",
-      "kind": "Entity"
-    },
-    {
-      "id": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "name": "Aidan Turner",
-      "summary": "Aidan Turner is known for playing the role of K\u00edli in The Hobbit.\nAidan Turner appeared in the three-part fantasy film The Hobbit.\nAidan Turner is known for playing the role of Ross Poldark in the 2015 BBC adaptation of The Poldark Novels.\nAidan Turner appeared in the 2015 BBC adaptation of The Poldark Novels by Winston Graham.\nAidan Turner portrayed Dante Gabriel Rossetti in Desperate Romantics.\nAidan Turner appeared in the television series Desperate Romantics.\nAidan Turner played the role of Ruair\u00ed McGowan in The Clinic.\nAidan Turner appeared in the television series The Clinic.\nAidan Turner played the role of John Mitchell in the supernatural drama series Being Human.\nAidan Turner appeared in the supernatural drama series Being Human.",
-      "kind": "Entity"
-    },
-    {
-      "id": "dd951e1f-c620-4e68-a30b-a990d133aa9f",
-      "name": "Ross Poldark",
-      "summary": "Aidan Turner is known for playing the role of Ross Poldark in the 2015 BBC adaptation of The Poldark Novels.",
-      "kind": "Entity"
-    },
-    {
-      "id": "c1e1d208-a51b-4e04-87b8-4fab936201ca",
-      "name": "The Poldark Novels",
-      "summary": "Aidan Turner appeared in the 2015 BBC adaptation of The Poldark Novels by Winston Graham.",
-      "kind": "Entity"
-    },
-    {
-      "id": "585902e6-c7c1-42bd-bedb-37d3922a9ad3",
-      "name": "Winston Graham",
-      "summary": "Author of the Poldark novels, adapted into the BBC series where Aidan Turner stars as Ross Poldark.",
-      "kind": "Entity"
-    },
-    {
-      "id": "aa33d9c6-21de-4acd-8870-3c8d01ba203e",
-      "name": "Dante Gabriel Rossetti",
-      "summary": "Aidan Turner portrayed Dante Gabriel Rossetti in Desperate Romantics.",
-      "kind": "Entity"
-    },
-    {
-      "id": "047f4803-4948-4004-a61e-0e9ef1107ef6",
-      "name": "Desperate Romantics",
-      "summary": "Aidan Turner appeared in the television series Desperate Romantics.",
-      "kind": "Entity"
-    },
-    {
-      "id": "1063459d-9ac5-494d-bb91-1937fdc3e771",
-      "name": "Ruair\u00ed McGowan",
-      "summary": "Aidan Turner played the role of Ruair\u00ed McGowan in The Clinic.",
-      "kind": "Entity"
-    },
-    {
-      "id": "78e7c316-aeeb-4309-b944-451d62085076",
-      "name": "The Clinic",
-      "summary": "Aidan Turner appeared in the television series The Clinic.",
-      "kind": "Entity"
-    },
-    {
-      "id": "bf2f5292-9522-4f91-bbd2-2fa046f55de6",
-      "name": "John Mitchell",
-      "summary": "Aidan Turner played the role of John Mitchell in the supernatural drama series Being Human.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9c0f0946-f6fd-468b-a492-fc90a6c2263d",
-      "name": "Being Human",
-      "summary": "Aidan Turner appeared in the supernatural drama series Being Human.",
-      "kind": "Entity"
-    },
-    {
-      "id": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "name": "Barry Robinson",
-      "summary": "Barry Robinson's normal voice is provided by Eddie Kaye Thomas.\nBarry Robinson's evil voice is provided by Craig Ferguson.\nBarry Robinson is Steve's morbidly obese friend.\nStan often yells insults at Barry Robinson about his weight without knowing why.\nBarry Robinson, like Snot, can speak Klingon and seems to read Quenya.\nBarry Robinson apparently has a fetish for Miss Piggy.\nWhen deranged, Barry Robinson speaks in a low-pitched voice like Gary Oldman.\nIn one episode, deranged Barry Robinson frames Steve for destroying Stan's commemorative plates.\nDeranged Barry Robinson attempts to replace Steve within Stan's immediate family.\nBarry Robinson tries to eliminate anyone who might come between him and Stan during his madness.\nBarry Robinson helps Snot and Toshi beat up a drugged Steve and urges them to kill Steve's family.\nBarry Robinson collaborates with Toshi and Snot to beat up drugged Steve and suggests killing Steve's family.",
-      "kind": "Entity"
-    },
-    {
-      "id": "f9c43d97-fa68-4a36-9ccf-fde4d5f6f476",
-      "name": "Eddie Kaye Thomas",
-      "summary": "Barry Robinson's normal voice is provided by Eddie Kaye Thomas.",
-      "kind": "Entity"
-    },
-    {
-      "id": "d741b6b8-fc3d-4262-8cbc-c9b0d107ad27",
-      "name": "Craig Ferguson",
-      "summary": "Barry Robinson's evil voice is provided by Craig Ferguson.",
-      "kind": "Entity"
-    },
-    {
-      "id": "ab614bf2-24c1-40dc-92bb-58c23fffd3ab",
-      "name": "Snot",
-      "summary": "Barry Robinson, like Snot, can speak Klingon and seems to read Quenya.\nBarry Robinson helps Snot and Toshi beat up a drugged Steve and urges them to kill Steve's family.",
-      "kind": "Entity"
-    },
-    {
-      "id": "9ef5df18-eefd-4ccb-88b7-7bb0df2623fe",
-      "name": "Miss Piggy",
-      "summary": "Barry Robinson apparently has a fetish for Miss Piggy.",
-      "kind": "Entity"
-    },
-    {
-      "id": "327f02f3-7415-42d3-a3f2-e011f723a66f",
-      "name": "Gary Oldman",
-      "summary": "When deranged, Barry Robinson speaks in a low-pitched voice like Gary Oldman.",
-      "kind": "Entity"
-    },
-    {
-      "id": "d286fe27-c55d-4251-882f-3e3476d7273f",
-      "name": "Toshi",
-      "summary": "Barry Robinson collaborates with Toshi and Snot to beat up drugged Steve and suggests killing Steve's family.",
+      "id": "00e47c9f-1f7f-4c4a-8544-f199a542492a",
+      "name": "edge of the countertop",
+      "summary": "The forgotten cup is located on the edge of the countertop.",
       "kind": "Entity"
     }
   ],
   "edges": [
     {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "fact": "John Bell acted in The Hobbit film series.",
-      "name": "ACTED_IN"
+      "source": "1dc41489-4302-427f-b342-52a910116821",
+      "target": "be0ef67c-4e29-4eb5-86e4-dc60e43ac624",
+      "fact": "Rain fell lightly during the afternoon hours as observed by the Speaker",
+      "name": "FELL_DURING"
     },
     {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "fact": "Mikael Persbrandt played the role of Beorn in The Hobbit.",
-      "name": "PLAYS_CHARACTER"
+      "source": "40b846cc-7d30-481f-8ea2-cf8975c73667",
+      "target": "be0ef67c-4e29-4eb5-86e4-dc60e43ac624",
+      "fact": "The door made a creaking sound as it shut, which was heard somewhere in the distance, presumably affecting the Speaker.",
+      "name": "SOUND_AFFECTS"
     },
     {
-      "source": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "target": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "fact": "The character Beorn appears in The Hobbit.",
-      "name": "CHARACTER_IN"
+      "source": "f2c28e0d-0c5e-437a-9c83-fd9b72db1d04",
+      "target": "ddd3477b-47ba-4cca-9109-976b22ca9bbb",
+      "fact": "A gentle breeze moved through the empty streets.",
+      "name": "MOVED_THROUGH"
     },
     {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "fact": "Aidan Turner is known for playing the role of K\u00edli in The Hobbit.",
-      "name": "PLAYED_ROLE"
+      "source": "fa21a304-bad4-4488-a2d8-a166d2f10595",
+      "target": "0d600ed4-2302-4561-842e-185b446f53fd",
+      "fact": "The grass remained wet from the morning dew.",
+      "name": "REMAINED_WET_FROM"
     },
     {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "3dbe6e2c-85d8-4dc6-98db-ac0a5ac3a74f",
-      "fact": "Aidan Turner appeared in the three-part fantasy film The Hobbit.",
-      "name": "APPEARED_IN"
+      "source": "72e028ba-d127-4e8b-8694-bd4953417194",
+      "target": "c40f543b-75ce-4e82-9b59-d7d052bbd02b",
+      "fact": "Leaves rustled softly when the wind increased in intensity.",
+      "name": "RUSTLES_WHEN_WIND_PICKED_UP"
     },
     {
-      "source": "2e1a6edf-79f4-4b9c-9ddc-0278eb467c26",
-      "target": "cc66101a-1c85-4b56-9a84-c65843bb678f",
-      "fact": "The Hobbit (South Park) is an episode of the South Park television series",
-      "name": "IS_EPISODE_OF"
+      "source": "02558ebe-ebd2-40a6-9672-253d7412583b",
+      "target": "f922a7cb-4742-4269-84e3-ff392a5baa0e",
+      "fact": "Paper bags drifted along the curb without purpose.",
+      "name": "DRIFTED_ALONG"
     },
     {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "cc66101a-1c85-4b56-9a84-c65843bb678f",
-      "fact": "Dian Bachar has made occasional appearances on South Park.",
-      "name": "APPEARS_IN"
+      "source": "48ada8cb-7193-4232-ad74-ee2807be2cf2",
+      "target": "700f7444-4a76-4ec3-8578-f9bbc78bedce",
+      "fact": "The open window caused the curtains to sway.",
+      "name": "HAS_EFFECT_ON"
     },
     {
-      "source": "2e1a6edf-79f4-4b9c-9ddc-0278eb467c26",
-      "target": "62f24986-ee1f-47b6-ad20-5f9098edb618",
-      "fact": "The Hobbit (South Park) centers on Wendy Testaburger's story about media impact on body image",
-      "name": "FEATURES_CHARACTER"
+      "source": "01a97607-3f3c-43ce-9b86-a149dfdcbfae",
+      "target": "15ce1ec6-17a3-4b0f-ae3a-814147773f1c",
+      "fact": "Dr. Alice Chen is the lead researcher at the Stanford Oncology Lab.",
+      "name": "WORKS_AT"
     },
     {
-      "source": "2e1a6edf-79f4-4b9c-9ddc-0278eb467c26",
-      "target": "16958cb1-9558-4247-aca3-41aef0a9fddc",
-      "fact": "The Hobbit (South Park) features Kanye West who crusades to prove Kim Kardashian is not a hobbit",
-      "name": "FEATURES_CHARACTER"
+      "source": "01a97607-3f3c-43ce-9b86-a149dfdcbfae",
+      "target": "5d2813e0-509d-4f17-8076-649c8d15d2fd",
+      "fact": "Dr. Alice Chen keeps her access code 7-ECHO-4 stored in a locked drawer.",
+      "name": "STORES_ACCESS_CODE"
     },
     {
-      "source": "16958cb1-9558-4247-aca3-41aef0a9fddc",
-      "target": "76c85449-3337-4cae-a293-da8dabeb848a",
-      "fact": "Kanye West is the fianc\u00e9 of Kim Kardashian",
-      "name": "IS_FIANCEE_OF"
+      "source": "74a647e6-74d1-4816-9af1-c639dee78315",
+      "target": "20e154b1-1fa2-4bb2-8638-50c4a2847a5d",
+      "fact": "Water dripped from the leaky pipe.",
+      "name": "DRIPS_FROM"
     },
     {
-      "source": "2e1a6edf-79f4-4b9c-9ddc-0278eb467c26",
-      "target": "c6ecce9c-9a56-4d09-8968-3d8f774362c6",
-      "fact": "The Hobbit (South Park) premiered on Comedy Central in the United States",
-      "name": "AIRED_ON"
+      "source": "74a647e6-74d1-4816-9af1-c639dee78315",
+      "target": "18d7b759-cefa-47cd-a6aa-a8c8e4b3883e",
+      "fact": "Water dripped into the empty basin.",
+      "name": "DRIPS_INTO"
     },
     {
-      "source": "4f3f724d-a95d-4de1-8e40-ac9e03ecdf16",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Stephen Full is the voice of Stan.",
-      "name": "VOICES"
+      "source": "fc4ea0a7-183d-4408-b409-bfb8634b140e",
+      "target": "96508c0c-e0c7-4be1-929a-433cd09b6d12",
+      "fact": "Somebody forgot to turn the porch light off.",
+      "name": "FORGOT_TO_TURN_OFF"
     },
     {
-      "source": "3c6fc554-874c-48ac-b0d0-642a1e47c2b6",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Avery called Stan 'just a dog' in the episode Stan Runs Away, which Stan is sensitive about.",
-      "name": "CALLS"
+      "source": "8d0fd3af-0f72-4804-bcc7-6d9dacb59120",
+      "target": "e0311bea-dd80-493a-8417-3bac519c6381",
+      "fact": "Dust settled slowly onto the unused shelves.",
+      "name": "SETTLED_ON"
     },
     {
-      "source": "3c6fc554-874c-48ac-b0d0-642a1e47c2b6",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Avery and the other children soon discovered Stan's blog in the episode The Kids Find Out Stan Blogs after a year of his secret blogging.",
-      "name": "DISCOVERS_BLOG_OF"
+      "source": "873e2f41-9bea-47d3-abe5-6deae2a444d7",
+      "target": "42b62908-78b5-474e-af6a-f2ec61f168fc",
+      "fact": "The lobby had a faint humming sound.",
+      "name": "EMITS_SOUND"
     },
     {
-      "source": "6a08ec8c-bfca-4dc2-9724-432c478e9e4d",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Arnaud Joyet plays the character Stan.",
-      "name": "PLAYS"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Trey Parker provides the voice for the character Stan Marsh.",
-      "name": "VOICES"
-    },
-    {
-      "source": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Steven Anita \"Steve\" Smith is the son of Stan Smith",
-      "name": "IS_SON_OF"
-    },
-    {
-      "source": "71d739cf-e9b6-4d21-a451-d4b80ebe712f",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Steve Lawton acts as the character Stan in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Deranged Barry Robinson attempts to replace Steve within Stan's immediate family.",
-      "name": "SEEKS_TO_REPLACE"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "fact": "Barry Robinson tries to eliminate anyone who might come between him and Stan during his madness.",
-      "name": "TRIES_TO_ELIMINATE_OBSTACLES_TO_RELATIONSHIP"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "256cb21f-5528-445d-a662-ecf474c75eb0",
-      "fact": "Stan is the James - Jennings family's new dog who blogs and talks.",
-      "name": "IS_DOG_OF"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "031a5b75-7206-4c1b-b968-b0db872cd645",
-      "fact": "Stan keeps his secret of talking from Ellen.",
-      "name": "KEEPS_SECRET_OF_TALKING_FROM"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "fact": "Stan keeps his secret of talking from Bennett.",
-      "name": "KEEPS_SECRET_OF_TALKING_FROM"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "3c6fc554-874c-48ac-b0d0-642a1e47c2b6",
-      "fact": "Avery is one of the only people who know Stan can talk and is his favorite child because they talk the most.",
-      "name": "CAN_TALK_WITH"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "704363d1-6356-482e-b69f-32f807e53ca6",
-      "fact": "Tyler is one of the only people who know Stan can talk.",
-      "name": "CAN_TALK_WITH"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "f7bfb122-47e7-489e-8d0f-ae93c0c77de3",
-      "fact": "Chloe is one of the only people who know Stan can talk.",
-      "name": "CAN_TALK_WITH"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "b0ccf915-a98a-4160-b1c8-573f9a7ad228",
-      "fact": "Karl is one of the only people who know Stan can talk.",
-      "name": "CAN_TALK_WITH"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "71eafb88-d81d-454c-ad80-9908b24c793e",
-      "fact": "Grandma James is one of the only people who know Stan can talk.",
-      "name": "CAN_TALK_WITH"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "5d14f3c5-aef7-4d73-8993-69276d973433",
-      "fact": "Stan hates noisy pomeranians.",
-      "name": "HATES"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "0d64ad20-0ce4-4e10-a879-a40c6787a973",
-      "fact": "Stan has a deep love of poodles.",
-      "name": "LOVES"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "94d7f82a-9a57-4442-b649-242518e11acf",
-      "fact": "Stan likes the game Realm of the Tower, shown in the episode World of Woofcraft.",
-      "name": "LIKES_GAME"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "913e2c9e-c544-4c71-bee3-ca299cbef41e",
-      "fact": "Stan has a beloved toy monkey named Robert who is his companion.",
-      "name": "HAS_TOY_COMPANION"
-    },
-    {
-      "source": "71eafb88-d81d-454c-ad80-9908b24c793e",
-      "target": "913e2c9e-c544-4c71-bee3-ca299cbef41e",
-      "fact": "Grandma James found Robert while cleaning the family room.",
-      "name": "FOUND"
-    },
-    {
-      "source": "86ec9b68-ec3c-453a-b270-88b5b6ee4c2a",
-      "target": "913e2c9e-c544-4c71-bee3-ca299cbef41e",
-      "fact": "Simon James Morgan plays the character Richard in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "984c272f-3b2e-4bf6-8dab-10c8b70935fe",
-      "fact": "Gamla stan metro station is a station of the Stockholm metro.",
-      "name": "PART_OF"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "b1ba423e-f69c-4c7e-b5ad-2a94a3b2b957",
-      "fact": "Gamla stan metro station is located in the district of Gamla stan.",
-      "name": "LOCATED_IN"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "09043bc4-ff66-42ca-9faf-d267abee2f6e",
-      "fact": "Gamla stan metro station is served by the Red line.",
-      "name": "SERVED_BY"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "6b4c3483-5b99-4e9d-8974-418eec4c1519",
-      "fact": "Gamla stan metro station is served by the Green line.",
-      "name": "SERVED_BY"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "a0269c88-9c22-450f-b0eb-e603fd5ac705",
-      "fact": "Gamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.",
-      "name": "CONNECTED_TO"
-    },
-    {
-      "source": "0af586a1-cc4d-421c-965f-4feefb9dcb5a",
-      "target": "414c99b2-8d83-4fd4-bffe-a0cfce4c1bbf",
-      "fact": "Gamla stan metro station was opened as part of the connection between Slussen and H\u00f6torget.",
-      "name": "CONNECTED_TO"
-    },
-    {
-      "source": "09043bc4-ff66-42ca-9faf-d267abee2f6e",
-      "target": "6a4fbad3-e9da-417e-a808-ade0e568bb53",
-      "fact": "The first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.",
-      "name": "CONNECTS"
-    },
-    {
-      "source": "09043bc4-ff66-42ca-9faf-d267abee2f6e",
-      "target": "57edcf6d-5e2d-49be-bcc8-f429fc8a8708",
-      "fact": "The first stretch of the Red line, between T-Centralen and Fru\u00e4ngen, was opened on 5 April 1964.",
-      "name": "CONNECTS"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "84aa912b-f320-41ab-a037-07a0d1fdc690",
-      "fact": "John Bell played Bain in two installments of The Hobbit film series.",
-      "name": "PLAYED"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "5a670a6d-2184-4ad4-ad17-6f13d683f721",
-      "fact": "John Bell played Angus in Battleship.",
-      "name": "PLAYED"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "ad6fe3a5-65a6-4be1-887f-de375effebc2",
-      "fact": "John Bell acted in Battleship.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "2ea276ec-ae9f-4001-9c50-7922ec664630",
-      "fact": "John Bell played Helius in Wrath of the Titans.",
-      "name": "PLAYED"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "838b3adf-1905-4141-a35f-1c86c1f91bee",
-      "fact": "John Bell acted in Wrath of the Titans.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "2e0313b5-ba3f-47e3-80a0-51be9e147fec",
-      "fact": "John Bell played Toby Coleman in Tracy Beaker Returns.",
-      "name": "PLAYED"
-    },
-    {
-      "source": "5270830f-7978-47df-91b2-a865ef410f3d",
-      "target": "900099e7-e570-40ef-8722-9732264bd30e",
-      "fact": "John Bell acted in Tracy Beaker Returns.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "6a08ec8c-bfca-4dc2-9724-432c478e9e4d",
-      "target": "b9f14b18-395a-4f11-bbc3-414e75e53e50",
-      "fact": "Arnaud Joyet acts in the series Hero Corp.",
-      "name": "ACTS_IN"
-    },
-    {
-      "source": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "target": "3232e3e4-a0f1-4628-86c9-b2a785ada46c",
-      "fact": "Jonathan Manu Bennett portrays the character Crixus in the TV series Spartacus.",
-      "name": "PORTRAYS"
-    },
-    {
-      "source": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "target": "05d66ddb-bd71-469e-a6b4-1047247ac759",
-      "fact": "Jonathan Manu Bennett portrays the character Allanon in The Shannara Chronicles.",
-      "name": "PORTRAYS"
-    },
-    {
-      "source": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "target": "f761b27f-93dd-4a5b-84bc-63b1017ea330",
-      "fact": "Jonathan Manu Bennett portrays Slade Wilson / Deathstroke in the TV series Arrow.",
-      "name": "PORTRAYS"
-    },
-    {
-      "source": "6d23b54f-b4d8-4f08-b554-e92d2ca7e825",
-      "target": "daed9240-e0ae-43b7-b4e3-9d2e1245fb49",
-      "fact": "Jonathan Manu Bennett portrays Azog the Defiler in The Hobbit film trilogy.",
-      "name": "PORTRAYS"
-    },
-    {
-      "source": "2b133a0f-b971-4286-88e1-bdd50b558387",
-      "target": "b4dc0fde-95a7-4b49-b235-dc5d607cbc0b",
-      "fact": "Tim Allen provided the voice for Buzz Lightyear in the Toy Story films and the Buzz Lightyear movie.",
-      "name": "VOICED_CHARACTER"
-    },
-    {
-      "source": "760da7ef-29bf-47fb-b573-1531ef5fec74",
-      "target": "b4dc0fde-95a7-4b49-b235-dc5d607cbc0b",
-      "fact": "Patrick Warburton was the voice of Buzz Lightyear for the TV series.",
-      "name": "VOICED_CHARACTER"
-    },
-    {
-      "source": "c2739532-6a7b-4035-a194-df3f1cc4db99",
-      "target": "b4dc0fde-95a7-4b49-b235-dc5d607cbc0b",
-      "fact": "Pat Fraley voiced Buzz Lightyear for video games and Disney Parks attractions.",
-      "name": "VOICED_CHARACTER"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "b4b19d43-652f-4825-971b-63ff03135984",
-      "fact": "Dian Bachar has acted in various films by or starring Trey Parker.",
-      "name": "WORKS_WITH"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "b4b19d43-652f-4825-971b-63ff03135984",
-      "fact": "Dian Bachar has acted in various films by or starring Matt Stone.",
-      "name": "WORKS_WITH"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "3180dac2-58db-4c17-acc9-2ad27ff69c27",
-      "fact": "Trey Parker provides the voice for the character Eric Cartman.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "a431c99b-237e-4d37-9ddc-c2b133bd2b09",
-      "fact": "Trey Parker provides the voice for the character Randy Marsh.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "3fe45643-aec4-4233-bfb7-a4065234ef68",
-      "fact": "Trey Parker provides the voice for the character Mr. Garrison.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "5f7d8163-5a05-4621-a00f-153e9c148f5e",
-      "fact": "Trey Parker provides the voice for the recurring character Clyde Donovan.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "6e817738-27e6-432c-9ae0-170f2f801550",
-      "fact": "Trey Parker provides the voice for the recurring character Mr. Hankey.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "f47d49b6-7c7c-471d-9702-a6462dabe45b",
-      "fact": "Trey Parker provides the voice for the recurring character Mr. Mackey.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "5b758ae5-cc9a-4448-a6b4-cb70c6e9d8f8",
-      "fact": "Trey Parker provides the voice for the recurring character Stephen Stotch.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "023d641f-df17-4dc7-b8c6-33703e75c58a",
-      "fact": "Trey Parker provides the voice for the recurring character Jimmy Valmer.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "6171437d-4a08-4244-aefc-83e8b351e432",
-      "fact": "Trey Parker provides the voice for the recurring character Timmy Burch.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "ac7c72c0-59ad-4723-b8bf-45c4ac08ae74",
-      "fact": "Trey Parker provides the voice for the recurring character Tuong Lu Kim.",
-      "name": "VOICES"
-    },
-    {
-      "source": "b4b19d43-652f-4825-971b-63ff03135984",
-      "target": "ff6490db-8656-4064-a313-0d972fd4616a",
-      "fact": "Trey Parker provides the voice for the recurring character Phillip.",
-      "name": "VOICES"
-    },
-    {
-      "source": "dbdb6188-f238-4e6f-ab14-8228dbf55ee0",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Brent Friedman is part of the writing staff of Gemini Division.",
-      "name": "WRITES_FOR"
-    },
-    {
-      "source": "98adf9f6-bd53-41ff-aff7-97fc03d52340",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Andy Black is part of the writing staff of Gemini Division.",
-      "name": "WRITES_FOR"
-    },
-    {
-      "source": "184e8557-4e4c-4d15-aed2-2db3d13935f9",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Lawrence Frank is part of the writing staff of Gemini Division.",
-      "name": "WRITES_FOR"
-    },
-    {
-      "source": "472505e2-2691-42eb-b152-0b8c0c03a622",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Jacqui Zambrano is part of the writing staff of Gemini Division.",
-      "name": "WRITES_FOR"
-    },
-    {
-      "source": "a69a7b4e-aaef-4163-b2a1-55c232135504",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Stan Rogow is credited as a director on Gemini Division and is presumed to direct multiple episodes.",
-      "name": "DIRECTS"
-    },
-    {
-      "source": "01615b19-0ec8-4790-938a-a9cdf03f6866",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Neal Israel directs some episodes of Gemini Division.",
-      "name": "DIRECTS"
-    },
-    {
-      "source": "2e79b87d-6a92-4cae-866c-80bc7b0104ca",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Ben Raab manages web content development for Gemini Division as a web content producer.",
-      "name": "WEB_CONTENT_PRODUCER"
-    },
-    {
-      "source": "c5767184-5995-4f74-811c-7ad80a483d85",
-      "target": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "fact": "Deric Hugues manages web content development for Gemini Division as a web content producer.",
-      "name": "WEB_CONTENT_PRODUCER"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "956a28e5-2d04-4cd7-88cd-f9e0c017bb4e",
-      "fact": "Gemini Division is a science fiction series created by Electric Farm Entertainment.",
-      "name": "CREATED_BY"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "dbdb6188-f238-4e6f-ab14-8228dbf55ee0",
-      "fact": "Gemini Division is based on an original story by Brent Friedman.",
-      "name": "BASED_ON_ORIGINAL_STORY_BY"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "dbdb6188-f238-4e6f-ab14-8228dbf55ee0",
-      "fact": "Brent Friedman serves as an executive producer of Gemini Division.",
-      "name": "EXECUTIVE_PRODUCER"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "83b46e22-6e3f-4b02-9064-e4a7e46e5fdf",
-      "fact": "The online series Gemini Division was developed by Joshua Stern.",
-      "name": "DEVELOPED_BY"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "38e28bcf-6ae5-4080-8213-79b2dc1e423b",
-      "fact": "Gemini Division currently airs on NBC.com as part of their online content lineup.",
-      "name": "AIRED_ON"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "dd2c1b17-be48-4e76-9227-e3aa8f95b92a",
-      "fact": "The series Gemini Division stars Rosario Dawson.",
-      "name": "STARS"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "8d4a4ccb-d49f-47c2-b073-9306db425ce3",
-      "fact": "J Alex Reed is a showrunner for Gemini Division.",
-      "name": "SHOWRUNNER"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "0a2e6284-0159-4e9b-94f3-b206fc66b0b2",
-      "fact": "Duane Loose is a showrunner for Gemini Division.",
-      "name": "SHOWRUNNER"
-    },
-    {
-      "source": "77842ad1-bade-41c9-9f26-cace2ecb479a",
-      "target": "7b1df6c5-8cdf-4ca1-8fca-a030bc7dbf5b",
-      "fact": "Stan Rowgow serves as an executive producer of Gemini Division.",
-      "name": "EXECUTIVE_PRODUCER"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "2a354ca0-5416-4411-b251-97a160347d52",
-      "fact": "Dian Bachar played the role of George Noon in Cannibal! The Musical.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "157cd951-29af-43e0-9854-2a5e0b3a1029",
-      "fact": "Dian Bachar played the role of Ben Chapleski in Orgazmo.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "19e02e91-329f-4074-907c-de416ec8dada",
-      "fact": "Dian Bachar played Kenny \"Squeak\" Scolari in the film BASEketball in 1998.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "63125d68-eba0-4783-bcd3-130de79743e3",
-      "target": "260a8ca9-482f-4a1e-9ea2-3cbaa49a7b68",
-      "fact": "Dian Bachar appeared as an alien engineer in Galaxy Quest, though most of his scenes were cut.",
-      "name": "ACTED_IN"
-    },
-    {
-      "source": "681f1777-d47a-4216-a317-22180104b2e6",
-      "target": "df1b0ab1-783a-4f3e-9279-1206777d7103",
-      "fact": "Stan Brakhage directed the series of experimental films called Dog Star Man.",
-      "name": "DIRECTED"
-    },
-    {
-      "source": "2b568cf1-bfa6-410a-8237-297093c5275f",
-      "target": "df1b0ab1-783a-4f3e-9279-1206777d7103",
-      "fact": "Jane Wodening appeared in the Dog Star Man experimental film series.",
-      "name": "FEATURED_IN"
-    },
-    {
-      "source": "2eea2849-443e-4a15-9810-bfa993673cef",
-      "target": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "fact": "Scott Grimes is the voice actor for Steven Anita \"Steve\" Smith in American Dad!",
-      "name": "VOICES"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "fact": "Barry Robinson is Steve's morbidly obese friend.",
-      "name": "IS_FRIENDS_WITH"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "fact": "In one episode, deranged Barry Robinson frames Steve for destroying Stan's commemorative plates.",
-      "name": "FRAMES"
-    },
-    {
-      "source": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "target": "42c22d16-bfe0-40d4-92c4-f8cee5806f3e",
-      "fact": "Steven Anita \"Steve\" Smith is a character in the animated television series American Dad!",
-      "name": "IS_CHARACTER_IN"
-    },
-    {
-      "source": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "target": "ad9d5645-ec73-4929-9ea9-9cfadf20e880",
-      "fact": "Steven Anita \"Steve\" Smith is the son of Francine Smith",
-      "name": "IS_SON_OF"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "ad9d5645-ec73-4929-9ea9-9cfadf20e880",
-      "fact": "Stan blames Francine for not getting into heaven, leading to Francine ending their relationship.",
-      "name": "ENDS_RELATIONSHIP_WITH"
-    },
-    {
-      "source": "da0eb335-99a9-4b6c-a467-ab31eb63292d",
-      "target": "7ab278a5-a759-4e92-be06-bc4a1fd20211",
-      "fact": "Steven Anita \"Steve\" Smith is the younger brother of Hayley Smith",
-      "name": "IS_YOUNGER_BROTHER_OF"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "9e889c3f-928f-43d0-87f1-0606c6cf06f5",
-      "fact": "Richard Crispin Armitage played the character John Thornton in the British television programme North & South (2004).",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "34fb8226-26c6-414d-8d49-bff490b50051",
-      "fact": "Richard Crispin Armitage portrayed the dwarf prince and leader Thorin Oakenshield in Peter Jackson's film trilogy adaptation of The Hobbit.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "6fb65ebe-ec14-4eb6-88d8-4129242aac9b",
-      "fact": "Richard Crispin Armitage acted as John Proctor in Ya\u00ebl Farber's stage production of Arthur Miller's The Crucible.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "dce6205f-a972-46fe-8861-ee3e349841e9",
-      "fact": "Richard Crispin Armitage portrayed Francis Dolarhyde in the American TV series Hannibal.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "e5f1a8d0-8a23-4d29-afba-43a288b2b44f",
-      "fact": "Richard Crispin Armitage acted as Lucas North in the British TV drama Spooks.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "d3de9aee-d175-4b02-b69e-559f5ae5f7f6",
-      "fact": "Richard Crispin Armitage played John Porter in the British TV drama Strike Back.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "19fd9cf2-4a86-4bf4-b432-0524eababc39",
-      "fact": "Richard Crispin Armitage portrayed Guy of Gisborne in the British TV drama Robin Hood.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "37c9b88e-01e6-4a5f-a551-933ae47fa6fe",
-      "target": "6819c206-aa34-4d08-9eb7-1c04292b4bd4",
-      "fact": "Richard Crispin Armitage voiced the character Trevor Belmont in the Netflix adaptation of Castlevania.",
-      "name": "VOICED_CHARACTER"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "bf8b8030-670e-430d-b04f-ba97b1c6ba14",
-      "fact": "Not What He Seems is the eleventh episode of the second season of Gravity Falls.",
-      "name": "IS_EPISODE_OF"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "174ff706-367d-4088-860e-ceef5c78ea39",
-      "fact": "Alex Hirsch created Not What He Seems.",
-      "name": "CREATED_BY"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "174ff706-367d-4088-860e-ceef5c78ea39",
-      "fact": "Grunkle Stan is voiced by Alex Hirsch.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "40cfaad5-b35c-432f-b884-9c2a14a099a2",
-      "fact": "Not What He Seems was written by Shion Takeuchi.",
-      "name": "WRITTEN_BY"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "26731982-835a-449f-95ba-7e10d2f0b4f6",
-      "fact": "Not What He Seems was written by Josh Weinstein.",
-      "name": "WRITTEN_BY"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "a028ec97-6347-440c-9222-ca82c93ea605",
-      "fact": "Not What He Seems was written by Jeff Rowe.",
-      "name": "WRITTEN_BY"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "af65a076-0ba4-4e26-8c6f-5dc00b0fd25a",
-      "fact": "Not What He Seems was written by Matt Chapman.",
-      "name": "WRITTEN_BY"
-    },
-    {
-      "source": "3f6b06e2-26eb-4664-9c0d-1899a1ec6e91",
-      "target": "3426528e-dab3-432e-929e-513659c40c72",
-      "fact": "Stephen Sandoval directed Not What He Seems.",
-      "name": "DIRECTED_BY"
-    },
-    {
-      "source": "5a984b74-0394-40e4-85e6-7675d295384b",
-      "target": "c8442f1f-fa6c-44f7-87e6-ecb1c7b92bf8",
-      "fact": "Dipper Pines is voiced by Jason Ritter.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "1d13b948-6301-4902-a80f-8bb7c11c0e36",
-      "target": "a5badbd3-d368-4306-96f1-901f6308319e",
-      "fact": "Mabel Pines is voiced by Kristen Schaal.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "5559368c-e678-4859-9e9c-f85420ce10a9",
-      "fact": "Mikael Persbrandt is best known in Swedish films for playing the character Gunvald Larsson in the Beck series of movies.",
-      "name": "PLAYS_CHARACTER"
-    },
-    {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "ae90ec6c-1560-4a29-ab26-93c7d0924ccb",
-      "fact": "Mikael Persbrandt acts in the Beck series of movies where he plays Gunvald Larsson.",
-      "name": "ACTS_IN"
-    },
-    {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "5e3f198a-a6cc-460a-8280-6c39fb204b06",
-      "fact": "Mikael Persbrandt is internationally known for his starring role in the Academy Award winning film In a Better World.",
-      "name": "STARS_IN"
-    },
-    {
-      "source": "5e3f198a-a6cc-460a-8280-6c39fb204b06",
-      "target": "b6670735-0e1b-4e75-897d-956191626def",
-      "fact": "The film In a Better World was directed by Susanne Bier.",
-      "name": "DIRECTED_BY"
-    },
-    {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "54679505-1e35-4f83-b6ad-44e102adb525",
-      "fact": "Mikael Persbrandt earned a nomination for Best Actor at the 2011 European Film Awards for his role in In a Better World.",
-      "name": "NOMINATED_FOR"
-    },
-    {
-      "source": "a418a992-e268-4ca9-bffc-dd68965c96a5",
-      "target": "07371fed-8687-4c10-b802-980888b35896",
-      "fact": "Mikael Persbrandt played the character Carl Hamilton from the novels by Jan Guillou.",
-      "name": "PLAYS_CHARACTER"
-    },
-    {
-      "source": "07371fed-8687-4c10-b802-980888b35896",
-      "target": "7238cf35-4826-49f0-a3f4-df77abd59922",
-      "fact": "The character Carl Hamilton was created by the novelist Jan Guillou.",
-      "name": "CHARACTER_CREATED_BY"
-    },
-    {
-      "source": "8ddc56ff-817c-4928-9150-ffdc1c79c34e",
-      "target": "94cd5115-2fef-4fa1-ac95-11a031c1995a",
-      "fact": "Brad Dourif is the voice actor of Chucky in Seed of Chucky.",
-      "name": "VOICE_OF"
-    },
-    {
-      "source": "0dd2965f-48e7-4454-b439-e05dee870ef1",
-      "target": "f715d887-4862-407f-b28b-7ad5c4212bbd",
-      "fact": "Jennifer Tilly voices herself and the character Tiffany in Seed of Chucky.",
-      "name": "VOICE_OF"
-    },
-    {
-      "source": "e42d618f-a84a-4d2c-8fe7-59cfd322217c",
-      "target": "34c58fe9-3b66-478c-9ed1-7f543ac6dd74",
-      "fact": "Billy Boyd is the voice actor of Glen in Seed of Chucky.",
-      "name": "VOICE_OF"
-    },
-    {
-      "source": "4b9a7672-9e71-4dd3-8cb4-65f4111412a5",
-      "target": "534a76c9-0947-42f1-86d4-587f1bf645f9",
-      "fact": "Beans El - Balawi plays the role of Human Glen in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "f75bcf12-37cb-42ca-bcf5-98b54c482e56",
-      "target": "dff8f9f2-ad5b-4221-91f4-5e7ddcb321bb",
-      "fact": "Kristina Hewitt portrays Human Glenda in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "44987801-2657-4994-910a-98b4899238e2",
-      "target": "0bffcd54-6f2a-49d9-a6e1-80af01209a94",
-      "fact": "Redman is voiced by Hannah Spearritt in Seed of Chucky.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "9940d413-702f-4ff8-981d-5239e9f8669d",
-      "target": "0bffcd54-6f2a-49d9-a6e1-80af01209a94",
-      "fact": "Hannah Spearritt plays the character Joan in Seed of Chucky.",
-      "name": "PORTRAYED_BY"
-    },
-    {
-      "source": "113e40e6-382b-4619-a10e-806f2440714f",
-      "target": "bb34a8b7-39ac-46e8-a29b-882f38431cde",
-      "fact": "John Waters portrays Pete Peters in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "6cdf39af-e5ec-47e7-98da-8495f02cb2ce",
-      "target": "efa54adc-ae05-4af1-9516-37630caaa6c1",
-      "fact": "Jason Flemyng plays both himself and Santa in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "9f2d5c84-50c1-47bc-ac86-63dc8a8f1e7e",
-      "target": "9f2d5c84-50c1-47bc-ac86-63dc8a8f1e7e",
-      "fact": "Tony Gardner appears as himself in Seed of Chucky.",
-      "name": "SELF"
-    },
-    {
-      "source": "02666c45-655f-4f9a-8194-30709b070463",
-      "target": "c29675a9-9b6c-41d9-a1d5-55ab022f7b25",
-      "fact": "Rebecca Santos plays the role of Fulvia in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "3e666b32-a2cd-422d-bd71-0de00ea10621",
-      "target": "f8b846db-f475-4367-a3d6-0f8a82911027",
-      "fact": "Keith - Lee Castle acts as Bill \"Psychs\" Sykes in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "30a23a4f-d0f8-4ca8-8013-b7c0454b5345",
-      "target": "7674b858-d7b0-41fc-944b-3ccec6c9b6a0",
-      "fact": "Paul Grossman portrays Little Boy in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "26570515-5fe4-4470-becb-46e0c84bcdda",
-      "target": "92b406cd-880a-4338-8dff-d4aa1bcaae83",
-      "fact": "Stephanie Chambers acts as Claudia's mom in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "3c4827e3-1832-471f-b508-fcc72e52815a",
-      "target": "b1172e03-5771-49a5-93de-be6c6696bbbd",
-      "fact": "Betty Simons - Denville plays Claudia in Seed of Chucky.",
-      "name": "ACTS_AS"
-    },
-    {
-      "source": "ad9d5645-ec73-4929-9ea9-9cfadf20e880",
-      "target": "78f4420e-d5fe-48d7-ade5-1e3f2379181f",
-      "fact": "Francine befriends Jesus and becomes his bride.",
-      "name": "BECOMES_BRIDE_OF"
-    },
-    {
-      "source": "35d9fac2-5b04-4751-9241-24dc4a1ac4fc",
-      "target": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "fact": "Grantray-Lawrence Animation produced the first season of Spider-Man (1967 TV series).",
-      "name": "PRODUCED"
-    },
-    {
-      "source": "094ff5a4-cdf8-4a79-b666-732a750e4e24",
-      "target": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "fact": "Krantz Films produced the second and third seasons of Spider-Man (1967 TV series).",
-      "name": "PRODUCED"
-    },
-    {
-      "source": "f409c182-05af-4f37-a0b9-409560fe26b2",
-      "target": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "fact": "Paul Soles starred as the voice of Peter Parker in the Spider-Man (1967 TV series).",
-      "name": "VOICED"
-    },
-    {
-      "source": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "target": "3e34fa73-73ae-4e86-ada1-302d6f63e0c0",
-      "fact": "Spider-Man (1967 TV series) is the original animated TV series based on the Spider-Man comic book series.",
-      "name": "BASED_ON"
-    },
-    {
-      "source": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "target": "3be2b3d1-b2df-4639-a879-ce220080881a",
-      "fact": "The Spider-Man comic book series was created by writer Stan Lee, on which the Spider-Man (1967 TV series) is based.",
-      "name": "CREATED_BY"
-    },
-    {
-      "source": "bdc86b14-c0bb-4ed0-b04b-13ce08453c22",
-      "target": "665f186c-0c9c-4bcf-8100-1460f25b0659",
-      "fact": "The Spider-Man comic book series was designed by artist Steve Ditko, serving as the basis for Spider-Man (1967 TV series).",
-      "name": "DESIGNED_BY"
-    },
-    {
-      "source": "f409c182-05af-4f37-a0b9-409560fe26b2",
-      "target": "5c694041-410e-4dc6-a17c-0836846573c7",
-      "fact": "Paul Soles provided the voice for the character Peter Parker in the Spider-Man (1967 TV series).",
-      "name": "VOICED_CHARACTER"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "dd951e1f-c620-4e68-a30b-a990d133aa9f",
-      "fact": "Aidan Turner is known for playing the role of Ross Poldark in the 2015 BBC adaptation of The Poldark Novels.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "c1e1d208-a51b-4e04-87b8-4fab936201ca",
-      "fact": "Aidan Turner appeared in the 2015 BBC adaptation of The Poldark Novels by Winston Graham.",
-      "name": "APPEARED_IN"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "aa33d9c6-21de-4acd-8870-3c8d01ba203e",
-      "fact": "Aidan Turner portrayed Dante Gabriel Rossetti in Desperate Romantics.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "047f4803-4948-4004-a61e-0e9ef1107ef6",
-      "fact": "Aidan Turner appeared in the television series Desperate Romantics.",
-      "name": "APPEARED_IN"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "1063459d-9ac5-494d-bb91-1937fdc3e771",
-      "fact": "Aidan Turner played the role of Ruair\u00ed McGowan in The Clinic.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "78e7c316-aeeb-4309-b944-451d62085076",
-      "fact": "Aidan Turner appeared in the television series The Clinic.",
-      "name": "APPEARED_IN"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "bf2f5292-9522-4f91-bbd2-2fa046f55de6",
-      "fact": "Aidan Turner played the role of John Mitchell in the supernatural drama series Being Human.",
-      "name": "PLAYED_ROLE"
-    },
-    {
-      "source": "daaabbfb-a0c5-40ac-a306-9d3c426ac804",
-      "target": "9c0f0946-f6fd-468b-a492-fc90a6c2263d",
-      "fact": "Aidan Turner appeared in the supernatural drama series Being Human.",
-      "name": "APPEARED_IN"
-    },
-    {
-      "source": "15c672e2-9011-4f0a-b1dd-9cfec1993f73",
-      "target": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "fact": "Stan often yells insults at Barry Robinson about his weight without knowing why.",
-      "name": "DISDAINS"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "f9c43d97-fa68-4a36-9ccf-fde4d5f6f476",
-      "fact": "Barry Robinson's normal voice is provided by Eddie Kaye Thomas.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "d741b6b8-fc3d-4262-8cbc-c9b0d107ad27",
-      "fact": "Barry Robinson's evil voice is provided by Craig Ferguson.",
-      "name": "VOICED_BY"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "ab614bf2-24c1-40dc-92bb-58c23fffd3ab",
-      "fact": "Barry Robinson, like Snot, can speak Klingon and seems to read Quenya.",
-      "name": "SHARES_LANGUAGE_SKILL_WITH"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "ab614bf2-24c1-40dc-92bb-58c23fffd3ab",
-      "fact": "Barry Robinson helps Snot and Toshi beat up a drugged Steve and urges them to kill Steve's family.",
-      "name": "COLLABORATES_WITH_AGAINST"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "9ef5df18-eefd-4ccb-88b7-7bb0df2623fe",
-      "fact": "Barry Robinson apparently has a fetish for Miss Piggy.",
-      "name": "HAS_FETISH_FOR"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "327f02f3-7415-42d3-a3f2-e011f723a66f",
-      "fact": "When deranged, Barry Robinson speaks in a low-pitched voice like Gary Oldman.",
-      "name": "SPEAKS_LIKE"
-    },
-    {
-      "source": "2912ff2b-11d7-4729-b22f-aef86315372d",
-      "target": "d286fe27-c55d-4251-882f-3e3476d7273f",
-      "fact": "Barry Robinson collaborates with Toshi and Snot to beat up drugged Steve and suggests killing Steve's family.",
-      "name": "COLLABORATES_WITH_AGAINST"
+      "source": "9d8bf5b8-8f5f-4148-82c7-5d7c6a856600",
+      "target": "00e47c9f-1f7f-4c4a-8544-f199a542492a",
+      "fact": "The forgotten cup is located on the edge of the countertop.",
+      "name": "SITS_ON"
     }
   ]
 }

@@ -288,21 +288,114 @@ def run_dense(task_index: int = 0, min_hops: int = 0) -> None:
         g.reset()
 
 
+# ── NIAH mode: the sparse end of the spectrum ─────────────────────────
+
+# A synthetic NIAH haystack: 19 deliberately low-entity filler sentences and
+# one information-rich needle. Graphiti should extract almost nothing from the
+# filler (no proper nouns, no relations) and a few entities from the needle —
+# the opposite extreme of the dense-MuSiQue 196-node graph.
+
+NIAH_FILLER = [
+    "The sky was cloudy and overcast throughout the day.",
+    "It rained lightly during the afternoon hours.",
+    "A gentle breeze moved through the empty streets.",
+    "The grass remained wet from the morning dew.",
+    "Small birds chirped intermittently in the early light.",
+    "The coffee in the cup had gone cold by noon.",
+    "Leaves rustled softly whenever the wind picked up.",
+    "Somewhere in the distance a door creaked shut.",
+    "The street lamps flickered once and then steadied.",
+    "Paper bags drifted along the curb without purpose.",
+    "A window had been left open and the curtains swayed.",
+    "The floor tiles were chipped and uneven underfoot.",
+    "Water dripped from a leaky pipe into an empty basin.",
+    "The mail arrived later than usual that day.",
+    "Somebody had forgotten to turn the porch light off.",
+    "The clock on the wall had stopped at an odd hour.",
+    "Dust settled slowly onto the unused shelves.",
+    "The lobby was quiet except for a faint humming sound.",
+    "A forgotten cup sat on the edge of the countertop.",
+]
+
+NIAH_NEEDLE = (
+    "Dr. Alice Chen, the lead researcher at the Stanford Oncology Lab, "
+    "keeps her access code 7-ECHO-4 stored in a locked drawer."
+)
+
+NIAH_QUESTION = "What is Dr. Alice Chen's access code?"
+NIAH_GOLD = "7-ECHO-4"
+
+
+def run_niah(needle_position: int = 12) -> None:
+    """Seed Graphiti with a NIAH-style haystack: many low-entity filler
+    sentences + one fact-rich needle. Illustrates the sparse end of what
+    Graphiti produces when the source text has almost no relational structure."""
+    from dotenv import load_dotenv
+    load_dotenv()
+    if not os.getenv("OPENAI_API_KEY"):
+        raise SystemExit("--mode niah requires OPENAI_API_KEY in env / .env")
+
+    from rlm.memory import FlatKVBackend, GraphitiBackend
+
+    pos = max(0, min(needle_position, len(NIAH_FILLER)))
+    paragraphs = list(NIAH_FILLER)
+    paragraphs.insert(pos, NIAH_NEEDLE)
+
+    print(
+        f"NIAH mode — seeding Graphiti with 1 needle + {len(NIAH_FILLER)} "
+        f"entity-sparse filler sentences (needle at index {pos}).\n"
+        f"Expect ~3–8 nodes total — the opposite extreme of dense-MuSiQue."
+    )
+
+    meta = {
+        "task_id": "synthetic_niah",
+        "question": NIAH_QUESTION,
+        "gold_answer": NIAH_GOLD,
+    }
+    globals()["TASK_META"] = meta
+
+    # Flat: write each line (filler + needle) so the KV table shows the haystack.
+    flat = FlatKVBackend()
+    for i, line in enumerate(paragraphs):
+        key = f"needle:line_{i:02d}" if i == pos else f"line_{i:02d}"
+        flat.write(key, line)
+    flat.write("_question", NIAH_QUESTION)
+    flat.write("_gold_answer", NIAH_GOLD)
+    dump_flat(dict(flat._store), source="niah (synthetic haystack)")
+
+    # Graph: each sentence is its own episode.
+    g = GraphitiBackend()
+    try:
+        for i, line in enumerate(paragraphs):
+            is_needle = i == pos
+            label = "NEEDLE" if is_needle else f"filler_{i:02d}"
+            print(f"  [{i+1}/{len(paragraphs)}] writing '{label}'…")
+            g.write(label, line)
+        nodes, edges = g._loop.run_until_complete(snapshot_graphiti(g._graphiti))
+        print(f"\nGraph snapshot: {len(nodes)} nodes, {len(edges)} edges (vs 196/164 on dense-MuSiQue)")
+        dump_graph(nodes, edges, source="niah (synthetic haystack, 1 needle + 19 filler)")
+    finally:
+        g.reset()
+
+
 # ── Main ───────────────────────────────────────────────────────────────
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--mode", choices=["simulated", "real", "dense"], default="simulated")
+    p.add_argument("--mode", choices=["simulated", "real", "dense", "niah"], default="simulated")
     p.add_argument("--task-index", type=int, default=0, help="which matching task to pick (real/dense only)")
     p.add_argument("--min-hops", type=int, default=0, help="filter MuSiQue tasks to at least H hops (real/dense only)")
+    p.add_argument("--needle-pos", type=int, default=12, help="index of needle within the haystack (niah only)")
     args = p.parse_args()
     print(f"Writing viz data to {VIZ_DATA}")
     if args.mode == "simulated":
         run_simulated()
     elif args.mode == "real":
         run_real(task_index=args.task_index, min_hops=args.min_hops)
-    else:
+    elif args.mode == "dense":
         run_dense(task_index=args.task_index, min_hops=args.min_hops)
+    else:
+        run_niah(needle_position=args.needle_pos)
     print("\nDone. Start the viewer with:")
     print("  cd memory_viz && npm install && npm run dev")
 
